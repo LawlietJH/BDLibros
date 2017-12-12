@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.2.7
+unit Libros;            // By LawlietJH, Versión 1.2.8
 
 interface
 
@@ -62,6 +62,7 @@ type
     IrA1: TMenuItem;
     Primero1: TMenuItem;
     Ultimo1: TMenuItem;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
