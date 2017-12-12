@@ -1,3 +1,11 @@
+# Archivos Generados:
+*.~*
+*.cfg
+*.dof
+*.res
+*.dcu
+*.ddp
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
