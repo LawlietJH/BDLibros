@@ -1,6 +1,6 @@
 object LibroForm: TLibroForm
-  Left = 341
-  Top = 106
+  Left = 343
+  Top = 39
   Width = 761
   Height = 648
   VertScrollBar.ParentColor = False
@@ -44,7 +44,7 @@ object LibroForm: TLibroForm
   end
   object DBText1: TDBText
     Left = 22
-    Top = 59
+    Top = 60
     Width = 63
     Height = 14
     Hint = 'ID del Libro'
@@ -166,7 +166,7 @@ object LibroForm: TLibroForm
     Left = 8
     Top = 432
     Width = 729
-    Height = 169
+    Height = 165
     Color = clSilver
     DataSource = dsLibros
     FixedColor = clGradientActiveCaption
@@ -181,9 +181,9 @@ object LibroForm: TLibroForm
   end
   object DBEdit1: TDBEdit
     Left = 84
-    Top = 58
-    Width = 248
-    Height = 16
+    Top = 57
+    Width = 247
+    Height = 18
     Hint = 'Nombre del Libro'
     TabStop = False
     AutoSize = False
@@ -201,10 +201,10 @@ object LibroForm: TLibroForm
     TabOrder = 7
   end
   object DBEdit2: TDBEdit
-    Left = 331
-    Top = 58
+    Left = 330
+    Top = 57
     Width = 186
-    Height = 16
+    Height = 18
     Hint = 'Nombre del Autor'
     TabStop = False
     AutoSize = False
@@ -222,10 +222,10 @@ object LibroForm: TLibroForm
     TabOrder = 8
   end
   object DBEdit3: TDBEdit
-    Left = 516
-    Top = 58
-    Width = 80
-    Height = 16
+    Left = 515
+    Top = 57
+    Width = 78
+    Height = 18
     Hint = 'Nombre del Propietario del Libro'
     TabStop = False
     AutoSize = False
@@ -278,7 +278,7 @@ object LibroForm: TLibroForm
     DatabaseName = 'ZioN'
     TableName = 'Libs.db'
     Left = 568
-    Top = 400
+    Top = 397
     object tbLibrosID: TAutoIncField
       FieldName = 'ID'
       ReadOnly = True
@@ -337,7 +337,7 @@ object LibroForm: TLibroForm
   object dsLibros: TDataSource
     DataSet = tbLibros
     Left = 600
-    Top = 400
+    Top = 397
   end
   object qryLibros: TQuery
     Active = True
