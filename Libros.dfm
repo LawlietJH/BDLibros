@@ -246,6 +246,17 @@ object LibroForm: TLibroForm
       Caption = '&Modificar'
       OnClick = Modificar1Click
     end
+    object IrA1: TMenuItem
+      Caption = '&Ir A'
+      object Primero1: TMenuItem
+        Caption = '&Primero'
+        OnClick = Primero1Click
+      end
+      object Ultimo1: TMenuItem
+        Caption = '&Ultimo'
+        OnClick = Ultimo1Click
+      end
+    end
   end
   object tbLibros: TTable
     Active = True

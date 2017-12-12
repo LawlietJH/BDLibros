@@ -1,4 +1,4 @@
-unit Libros;         // By LawlietJH, Versión 1.2.6
+unit Libros;            // By LawlietJH, Versión 1.2.7
 
 interface
 
@@ -59,6 +59,9 @@ type
     qryLibrosFechaDebolucion: TDateField;
     qryLibrosFechaRegalo: TDateField;
     qryLibrosComentarios: TStringField;
+    IrA1: TMenuItem;
+    Primero1: TMenuItem;
+    Ultimo1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -76,6 +79,8 @@ type
     procedure GetDatos();
     procedure PopupMenu1Popup(Sender: TObject);
     procedure Modificar1Click(Sender: TObject);
+    procedure Primero1Click(Sender: TObject);
+    procedure Ultimo1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -220,7 +225,7 @@ Var
 Begin
 
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then Caso := 0
-   Else Caso := 1;
+   Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then Caso := 1;
 
    Copiar(Caso);
 
@@ -247,6 +252,18 @@ begin
    Copiar(0);
    dbgLibros.SelectedField.Clear;
 End;
+
+procedure TLibroForm.Primero1Click(Sender: TObject);
+begin
+   If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then tbLibros.FindFirst
+   Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then qryLibros.FindFirst;
+end;
+
+procedure TLibroForm.Ultimo1Click(Sender: TObject);
+begin
+   If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then tbLibros.FindLast
+   Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then qryLibros.FindLast;
+end;
 
 procedure TLibroForm.Copiar(Caso: Integer);
 Var
