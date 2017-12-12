@@ -43,9 +43,9 @@ object LibroForm: TLibroForm
     ParentFont = False
   end
   object DBText1: TDBText
-    Left = 22
+    Left = 27
     Top = 60
-    Width = 63
+    Width = 56
     Height = 14
     Hint = 'ID del Libro'
     Alignment = taCenter
@@ -180,9 +180,9 @@ object LibroForm: TLibroForm
     TitleFont.Style = []
   end
   object DBEdit1: TDBEdit
-    Left = 84
+    Left = 86
     Top = 57
-    Width = 247
+    Width = 245
     Height = 18
     Hint = 'Nombre del Libro'
     TabStop = False
