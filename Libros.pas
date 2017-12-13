@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.3
+unit Libros;            // By LawlietJH, Versión 1.3.4
 
 interface
 
@@ -67,6 +67,11 @@ type
     qryLibrosComentarios: TStringField;
     FiltroPersonalizado1: TMenuItem;
     BuscarLibro1: TMenuItem;
+    MainMenu1: TMainMenu;
+    Mostrar1: TMenuItem;
+    FiltroPersonalizado2: TMenuItem;
+    BuscarLibro2: TMenuItem;
+    Refrescar1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -93,6 +98,9 @@ type
     function EliminaSaltoLinea(const Cadena: string): string;
     procedure FiltroPersonalizado1Click(Sender: TObject);
     procedure BuscarLibro1Click(Sender: TObject);
+    procedure FiltroPersonalizado2Click(Sender: TObject);
+    procedure BuscarLibro2Click(Sender: TObject);
+    procedure Refrescar1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -116,6 +124,7 @@ begin
    Clipboard.AsText := '';
    tbLibros.FindLast;
    btnQuery.Visible := False;
+   ShowMessage(MainMenu1.Items[0].Caption);
 end;
 
 //==============================================================================
@@ -492,14 +501,74 @@ End;
 
 procedure TLibroForm.FiltroPersonalizado1Click(Sender: TObject);
 begin
-   If btnQuery.Visible = False Then btnQuery.Visible := True
-   Else btnQuery.Visible := False;
+   If btnQuery.Visible = False Then
+   Begin
+      MainMenu1.Items[0].Checked := True;
+      btnQuery.Visible := True
+   End
+   Else
+   Begin
+      MainMenu1.Items[0].Checked := False;
+      btnQuery.Visible := False;
+   End;
 end;
 
 procedure TLibroForm.BuscarLibro1Click(Sender: TObject);
 begin
-   If btnBusqueda.Visible = False Then btnBusqueda.Visible := True
-   Else btnBusqueda.Visible := False
+   If btnBusqueda.Visible = False Then
+   Begin
+      MainMenu1.Items[0].Checked := True;
+      btnBusqueda.Visible := True;
+   End
+   Else
+   Begin
+      MainMenu1.Items[0].Checked := False;
+      btnBusqueda.Visible := False
+   End;
+end;
+
+//==============================================================================
+
+procedure TLibroForm.FiltroPersonalizado2Click(Sender: TObject);
+begin
+   If btnQuery.Visible = False Then
+   Begin
+      PopUpMenu1.Items[5].Checked := True;
+      btnQuery.Visible := True
+   End
+   Else
+   Begin
+      PopUpMenu1.Items[5].Checked := False;
+      btnQuery.Visible := False;
+   End;
+end;
+
+procedure TLibroForm.BuscarLibro2Click(Sender: TObject);
+begin
+   If btnBusqueda.Visible = False Then
+   Begin
+      PopUpMenu1.Items[6].Checked := True;
+      btnBusqueda.Visible := True;
+   End
+   Else
+   Begin
+      PopUpMenu1.Items[6].Checked := False;
+      btnBusqueda.Visible := False
+   End;
+end;
+
+procedure TLibroForm.Refrescar1Click(Sender: TObject);
+begin
+   If btnRefrescar.Visible = False Then
+   Begin
+      //PopUpMenu1.Items[7].Checked := True;
+      btnRefrescar.Visible := True;
+   End
+   Else
+   Begin
+      //PopUpMenu1.Items[7].Checked := False;
+      btnRefrescar.Visible := False
+   End;
 end;
 
 //==============================================================================

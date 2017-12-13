@@ -1,8 +1,8 @@
 object LibroForm: TLibroForm
-  Left = 339
-  Top = 75
+  Left = 301
+  Top = 29
   Width = 761
-  Height = 648
+  Height = 665
   VertScrollBar.ParentColor = False
   Caption = 'Base de Datos de Libros'
   Color = clBackground
@@ -11,6 +11,7 @@ object LibroForm: TLibroForm
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   PopupMenu = PopupMenu1
   Position = poScreenCenter
@@ -68,7 +69,7 @@ object LibroForm: TLibroForm
     Top = 5
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.3.3'
+    Caption = 'Versi'#243'n 1.3.4'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
@@ -464,6 +465,30 @@ object LibroForm: TLibroForm
       FieldName = 'Comentarios'
       Origin = 'ZION."Libs.DB".Comentarios'
       Size = 50
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 536
+    Top = 397
+    object Mostrar1: TMenuItem
+      Caption = '&Mostrar'
+      object FiltroPersonalizado2: TMenuItem
+        AutoCheck = True
+        Caption = '&Filtro Personalizado'
+        OnClick = FiltroPersonalizado2Click
+      end
+      object BuscarLibro2: TMenuItem
+        AutoCheck = True
+        Caption = '&Buscar Libro'
+        Checked = True
+        OnClick = BuscarLibro2Click
+      end
+      object Refrescar1: TMenuItem
+        AutoCheck = True
+        Caption = '&Refrescar'
+        Checked = True
+        OnClick = Refrescar1Click
+      end
     end
   end
 end
