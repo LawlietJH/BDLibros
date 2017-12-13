@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.2.9
+unit Libros;            // By LawlietJH, Versión 1.3.0
 
 interface
 
@@ -11,7 +11,7 @@ type
   TLibroForm = class(TForm)
     Label2: TLabel;
     Label1: TLabel;
-    btnID: TBitBtn;
+    btnRefrescar: TBitBtn;
     btnBusqueda: TBitBtn;
     btnQuery: TBitBtn;
     ComboBox1: TComboBox;
@@ -67,14 +67,14 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
-    procedure btnIDClick(Sender: TObject);
+    procedure btnRefrescarClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
     procedure Copiar1Click(Sender: TObject);
     procedure Pegar1Click(Sender: TObject);
     procedure Limpiar1Click(Sender: TObject);
     procedure dbgQueryKeyPress(Sender: TObject; var Key: Char);
-    procedure BuscarID(ID: String);
+    procedure BuscarID(ID: String; Componente: String = '');
     procedure Copiar(Caso: Integer);
     procedure Pegar();
     procedure Query(Query: String);
@@ -84,6 +84,7 @@ type
     procedure Primero1Click(Sender: TObject);
     procedure Ultimo1Click(Sender: TObject);
     procedure Buscar1Click(Sender: TObject);
+    procedure EjecutarQuery(InputString: String);
 
   private
     { Private declarations }
@@ -112,20 +113,7 @@ var
 begin
    InputString := qryLibros.SQL.Strings[0];
    InputString := InputBox('Nuevo Query','Tecle el Query a ejecutar', InputString);
-
-   If InputString <> '' Then
-   Begin
-      qryLibros.Active := False;
-      qryLibros.SQL.Clear;
-      qryLibros.SQL.Add(InputString);
-      Try
-         qryLibros.Active := True;
-      Except
-         On EDBEngineError Do
-            ShowMessage('El Query que insertó tiene un error. Verifiquelo, e intente después.');
-      End;
-   End
-   Else ShowMessage('El Query que proporcionó no es válido.' + #13#10 + 'Verifiquelo e intente de nuevo.');
+   EjecutarQuery(InputString);
 end;
 
 procedure TLibroForm.btnBusquedaClick(Sender: TObject);
@@ -143,13 +131,27 @@ begin
    End
 end;
 
-procedure TLibroForm.btnIDClick(Sender: TObject);
-var
-   ID:         String;
+procedure TLibroForm.btnRefrescarClick(Sender: TObject);
 begin
-   ID := InputBox('Buscar ID','Escribe Un Número ID', '');
-   BuscarID(ID);
+   EjecutarQuery(qryLibros.SQL.Strings[0]);
 end;
+
+procedure TLibroForm.EjecutarQuery(InputString: String);
+Begin
+   If InputString <> '' Then
+   Begin
+      qryLibros.Active := False;
+      qryLibros.SQL.Clear;
+      qryLibros.SQL.Add(InputString);
+      Try
+         qryLibros.Active := True;
+      Except
+         On EDBEngineError Do
+            ShowMessage('El Query que insertó tiene un error. Verifiquelo, e intente después.');
+      End;
+   End
+   Else ShowMessage('El Query que proporcionó no es válido.' + #13#10 + 'Verifiquelo e intente de nuevo.');
+End;
 
 procedure TLibroForm.ComboBox1Change(Sender: TObject);
 begin
@@ -256,6 +258,19 @@ begin
    dbgLibros.SelectedField.Clear;
 End;
 
+procedure TLibroForm.Modificar1Click(Sender: TObject);
+begin
+   BuscarID(IntToStr(qryLibrosID.Value), 'dbgLibros');
+end;
+
+procedure TLibroForm.Buscar1Click(Sender: TObject);
+var
+   ID: String;
+begin
+   ID := InputBox('Buscar ID','Escribe Un Número ID', '');
+   BuscarID(ID);
+end;
+
 procedure TLibroForm.Primero1Click(Sender: TObject);
 begin
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then tbLibros.FindFirst
@@ -312,7 +327,7 @@ Begin
    End Else
    If key = ' ' Then qryLibros.FindNext;
    //Clipboard.AsText := key;
-   qryLibros.Refresh;
+   //qryLibros.Refresh;
 End;
 
 procedure TLibroForm.Query(Query: String);
@@ -372,21 +387,17 @@ Begin
    ComboBox2.SelStart;
 End;
 
-procedure TLibroForm.Modificar1Click(Sender: TObject);
-begin
-   BuscarID(IntToStr(qryLibrosID.Value));
-end;
-
-procedure TLibroForm.BuscarID(ID: String);
+procedure TLibroForm.BuscarID(ID: String; Componente: String = '');
 var
    Cont:       Integer;
    Total:      Integer;
    Encontrado: Boolean;
-   Componente: String;
 begin
 
-   Componente := TComponent(PopUpMenu1.PopupComponent).Name;
+   If Componente = '' then Componente := TComponent(PopUpMenu1.PopupComponent).Name;
+
    ShowMessage(TComponent(PopUpMenu1.PopupComponent).Name);
+
    If Componente = 'dbgLibros' Then
    Begin
       If ID <> '' Then
@@ -435,8 +446,8 @@ begin
         Try
            If StrToInt(ID) > Total Then
            Begin
-              ShowMessage('Ese ID No Existe!');
-              qryLibros.FindLast;
+              ShowMessage('No Existe ese ID en esta Muestra de Datos');
+              qryLibros.FindFirst;
            End
            Else
            Begin
@@ -451,18 +462,10 @@ begin
                  qryLibros.Next;
               End;
            End;
-        Except On EConvertError Do ShowMessage('Escribe Un Número');
+        Except On EConvertError Do ShowMessage('Escribe Un ID');
         End;
       End;
    End;
 End;
-
-procedure TLibroForm.Buscar1Click(Sender: TObject);
-var
-   ID: String;
-begin
-   ID := InputBox('Buscar ID','Escribe Un Número ID', '');
-   BuscarID(ID);
-end;
 
 end.

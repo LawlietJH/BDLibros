@@ -67,7 +67,7 @@ object LibroForm: TLibroForm
     Top = 7
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.2.9'
+    Caption = 'Versi'#243'n 1.3.0'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
@@ -77,14 +77,14 @@ object LibroForm: TLibroForm
     ParentColor = False
     ParentFont = False
   end
-  object btnID: TBitBtn
+  object btnRefrescar: TBitBtn
     Left = 632
     Top = 400
     Width = 105
     Height = 23
-    Caption = 'Buscar ID'
+    Caption = 'Refrescar'
     TabOrder = 0
-    OnClick = btnIDClick
+    OnClick = btnRefrescarClick
   end
   object btnBusqueda: TBitBtn
     Left = 632
