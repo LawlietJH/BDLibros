@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.0
+unit Libros;            // By LawlietJH, Versión 1.3.1
 
 interface
 
@@ -19,6 +19,14 @@ type
     PopupMenu1: TPopupMenu;
     Pegar1: TMenuItem;
     Limpiar1: TMenuItem;
+    IrA1: TMenuItem;
+    Primero1: TMenuItem;
+    Ultimo1: TMenuItem;
+    Label3: TLabel;
+    Buscar1: TMenuItem;
+    ComboBox3: TComboBox;
+    Copiar1: TMenuItem;
+    Modificar1: TMenuItem;
     tbLibros: TTable;
     dsQuery: TDataSource;
     dsLibros: TDataSource;
@@ -43,8 +51,6 @@ type
     tbLibrosFechaDebolucion: TDateField;
     tbLibrosFechaRegalo: TDateField;
     tbLibrosComentarios: TStringField;
-    Copiar1: TMenuItem;
-    Modificar1: TMenuItem;
     qryLibrosID: TIntegerField;
     qryLibrosLibro: TStringField;
     qryLibrosAutor: TStringField;
@@ -59,17 +65,18 @@ type
     qryLibrosFechaDebolucion: TDateField;
     qryLibrosFechaRegalo: TDateField;
     qryLibrosComentarios: TStringField;
-    IrA1: TMenuItem;
-    Primero1: TMenuItem;
-    Ultimo1: TMenuItem;
-    Label3: TLabel;
-    Buscar1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
     procedure btnRefrescarClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
+    procedure ComboBox3Change(Sender: TObject);
+    procedure PopupMenu1Popup(Sender: TObject);
+    procedure Modificar1Click(Sender: TObject);
+    procedure Primero1Click(Sender: TObject);
+    procedure Ultimo1Click(Sender: TObject);
+    procedure Buscar1Click(Sender: TObject);
     procedure Copiar1Click(Sender: TObject);
     procedure Pegar1Click(Sender: TObject);
     procedure Limpiar1Click(Sender: TObject);
@@ -79,12 +86,9 @@ type
     procedure Pegar();
     procedure Query(Query: String);
     procedure GetDatos();
-    procedure PopupMenu1Popup(Sender: TObject);
-    procedure Modificar1Click(Sender: TObject);
-    procedure Primero1Click(Sender: TObject);
-    procedure Ultimo1Click(Sender: TObject);
-    procedure Buscar1Click(Sender: TObject);
     procedure EjecutarQuery(InputString: String);
+    function EstaAlFinal(Buscado, Texto: string): Boolean;
+    function EliminaSaltoLinea(const Cadena: string): string;
 
   private
     { Private declarations }
@@ -105,7 +109,10 @@ begin
    ComboBox1.ItemIndex := 4;
    Clipboard.AsText := '';
    tbLibros.FindLast;
+   ComboBox3.Visible := False;
 end;
+
+//==============================================================================
 
 procedure TLibroForm.btnQueryClick(Sender: TObject);
 var
@@ -153,8 +160,13 @@ Begin
    Else ShowMessage('El Query que proporcionó no es válido.' + #13#10 + 'Verifiquelo e intente de nuevo.');
 End;
 
+//==============================================================================
+
 procedure TLibroForm.ComboBox1Change(Sender: TObject);
 begin
+
+   ComboBox3.Visible := False;
+
    Case ComboBox1.ItemIndex Of
    0: Begin
          Comprueba := 'Autor';
@@ -184,9 +196,11 @@ Var
    ComboBoxDato: String;
 begin
    ComboBoxDato := ComboBox2.Text;
-   
+
    If ComboBox2.ItemIndex = 0 Then
    Begin
+      ComboBox3.Visible := False;
+
       qryLibros.Active := False;
       qryLibros.SQL.Clear;
       qryLibros.SQL.Add('SELECT * FROM Libs');
@@ -194,6 +208,9 @@ begin
    End
    Else
    Begin
+
+      ComboBox3.Visible := True;
+
       qryLibros.Active := False;
       qryLibros.SQL.Clear;
 
@@ -207,6 +224,89 @@ begin
 
    End;
 end;
+
+procedure TLibroForm.ComboBox3Change(Sender: TObject);
+Var
+   Query:   String;
+   X, Posy: Integer;
+begin
+   if ComboBox3.Text = 'Descendente' Then
+   Begin
+      Query := Trim(qryLibros.SQL.Text);
+      Query := EliminaSaltoLinea(Query);
+      If NOT EstaAlFinal('DESC', Query) Then
+      Begin
+         Query := Query + ' DESC';
+         qryLibros.Active := False;
+         qryLibros.SQL.Clear;
+         qryLibros.SQL.Add(Query);
+         qryLibros.Active := True;
+      End;
+   End Else
+   If ComboBox3.Text = 'Ascendente' Then
+   Begin
+      Query := Trim(qryLibros.SQL.Text);
+      Query := EliminaSaltoLinea(Query);
+      If EstaAlFinal('DESC', Query) Then
+      Begin
+         SetLength(Query, Length(Query)-5);
+         qryLibros.Active := False;
+         qryLibros.SQL.Clear;
+         qryLibros.SQL.Add(Query);
+         qryLibros.Active := True;
+      End;
+      //Posy := pos('D',Query);
+      //For X := 0 To 4 Do Delete(Query, Posy-1, 1);
+   End;
+end;
+
+procedure TLibroForm.GetDatos();
+Var
+   Cony: Integer;
+   Cont: Integer;
+   Pos:  Integer;
+   xD:   Boolean;
+Begin
+   ComboBox2.Items.Clear;
+   ComboBox2.Items.Add('Todos');
+   ComboBox2.Visible := True;
+   ComboBox2.Sorted := False;
+
+   qryLibros.Active := False;
+   qryLibros.SQL.Clear;
+   qryLibros.SQL.Add('SELECT * FROM Libs');
+   qryLibros.Active := True;
+
+   qryLibros.FindLast;
+   Cony := qryLibros.FindField('ID').AsInteger;
+   qryLibros.FindFirst;
+
+   For Pos := 0 To Cony - 1 Do
+   Begin
+      xD := False;
+      For Cont := 0 To ComboBox2.Items.Count - 1 Do
+      Begin
+         If qryLibros.FindField(Comprueba).AsString = ComboBox2.Items[Cont] Then xD := True;
+      End;
+      If xD = False Then ComboBox2.Items.Add(qryLibros.FindField(Comprueba).AsString);
+
+      qryLibros.Next;
+   End;
+
+   For Pos := 0 To ComboBox2.Items.Count - 1 Do
+   Begin
+      If ComboBox2.Items[Pos] = '' Then
+      Begin
+         ComboBox2.Items[Pos] := 'Sin Datos';
+      End Else
+   End;
+
+   qryLibros.FindFirst;
+   ComboBox2.ItemIndex := 0;
+   ComboBox2.SelStart;
+End;
+
+//==============================================================================
 
 procedure TLibroForm.PopupMenu1Popup(Sender: TObject);
 Begin
@@ -229,6 +329,8 @@ Var
    Caso : Integer;
 Begin
 
+   Caso := 0;
+
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then Caso := 0
    Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then Caso := 1;
 
@@ -237,11 +339,9 @@ Begin
 end;
 
 procedure TLibroForm.Pegar1Click(Sender: TObject);
-Var
-   Columna: String;
 Begin
 
-   Columna := dbgLibros.SelectedField.FieldName;
+   //Columna := dbgLibros.SelectedField.FieldName;  //Obtiene el nombre de la columna actual.
 
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then
    Begin
@@ -307,6 +407,8 @@ Begin
    dbgLibros.SelectedField.Text := Clipboard.AsText;
 End;
 
+//==============================================================================
+
 procedure TLibroForm.dbgQueryKeyPress(Sender: TObject; var Key: Char);
 Var
    X : Integer;
@@ -341,89 +443,37 @@ Begin
    qryLibros.Active := True;
 End;
 
-procedure TLibroForm.GetDatos();
-Var
-   Cony: Integer;
-   Cont: Integer;
-   Pos:  Integer;
-   xD:   Boolean;
-Begin
-   ComboBox2.Items.Clear;
-   ComboBox2.Items.Add('Todos');
-   ComboBox2.Visible := True;
-   ComboBox2.Sorted := False;
-
-   qryLibros.Active := False;
-   qryLibros.SQL.Clear;
-   qryLibros.SQL.Add('SELECT * FROM Libs');
-   qryLibros.Active := True;
-
-   qryLibros.FindLast;
-   Cony := qryLibros.FindField('ID').AsInteger;
-   qryLibros.FindFirst;
-
-   For Pos := 0 To Cony - 1 Do
-   Begin
-      xD := False;
-      For Cont := 0 To ComboBox2.Items.Count - 1 Do
-      Begin
-         If qryLibros.FindField(Comprueba).AsString = ComboBox2.Items[Cont] Then xD := True;
-      End;
-      If xD = False Then ComboBox2.Items.Add(qryLibros.FindField(Comprueba).AsString);
-
-      qryLibros.Next;
-   End;
-
-   For Pos := 0 To ComboBox2.Items.Count - 1 Do
-   Begin
-      If ComboBox2.Items[Pos] = '' Then
-      Begin
-         ComboBox2.Items[Pos] := 'Sin Datos';
-      End Else
-   End;
-
-   qryLibros.FindFirst;
-   ComboBox2.ItemIndex := 0;
-   ComboBox2.SelStart;
-End;
-
 procedure TLibroForm.BuscarID(ID: String; Componente: String = '');
 var
    Cont:       Integer;
    Total:      Integer;
+   Actual:     Integer;
    Encontrado: Boolean;
 begin
 
-   If Componente = '' then Componente := TComponent(PopUpMenu1.PopupComponent).Name;
+   Cont := 0;
+   Total := tbLibros.RecordCount;
+   Actual := qryLibros.RecordCount;
+   Encontrado := False;
 
-   ShowMessage(TComponent(PopUpMenu1.PopupComponent).Name);
+   If Componente = '' then Componente := TComponent(PopUpMenu1.PopupComponent).Name;
 
    If Componente = 'dbgLibros' Then
    Begin
       If ID <> '' Then
       Begin
-        Cont := 0;
-        Encontrado := False;
-
-        tbLibros.FindLast;
-        Total := tbLibros.FindField('ID').AsInteger;
         tbLibros.FindFirst;
-
         Try
            If StrToInt(ID) > Total Then
-           Begin
-              ShowMessage('Ese ID No Existe!');
+           Begin                                                                                                                         
               tbLibros.FindLast;
+              ShowMessage('                 Ese ID No Existe!' + #10#13#10#13 + 'Solo Existen En Total: '+IntToStr(Total)+' Registros.');
            End
            Else
            Begin
-              While (not Encontrado) and (Cont < Total) do
+              While (Not Encontrado) and (Cont < Total) do
               Begin
-                 If tbLibros.FindField('ID').AsInteger = StrToInt(ID) Then
-                 Begin
-                    Encontrado := True;
-                    Break;
-                 End;
+                 If tbLibros.FindField('ID').AsInteger = StrToInt(ID) Then Break;
                  Cont := Cont + 1;
                  tbLibros.Next;
               End;
@@ -436,30 +486,25 @@ begin
    Begin
       If ID <> '' Then
       Begin
-        Cont := 0;
-        Encontrado := False;
-
-        qryLibros.FindLast;
-        Total := qryLibros.FindField('ID').AsInteger;
         qryLibros.FindFirst;
-
         Try
            If StrToInt(ID) > Total Then
            Begin
-              ShowMessage('No Existe ese ID en esta Muestra de Datos');
               qryLibros.FindFirst;
+              ShowMessage('                 Ese ID No Existe!' + #10#13#10#13 + 'Solo Existen En Total: '+IntToStr(Total)+' Registros.');
            End
            Else
            Begin
-              While (not Encontrado) and (Cont < Total) do
+              While (Not Encontrado) and (Cont < Actual) do
               Begin
-                 If qryLibros.FindField('ID').AsInteger = StrToInt(ID) Then
-                 Begin
-                    Encontrado := True;
-                    Break;
-                 End;
+                 If qryLibros.FindField('ID').AsInteger = StrToInt(ID) Then Break;
                  Cont := Cont + 1;
                  qryLibros.Next;
+              End;
+              If Cont = Actual Then
+              Begin                                                          
+                 qryLibros.FindFirst;
+                 ShowMessage('No se Encontro El ID Buscado en Esta Muestra');
               End;
            End;
         Except On EConvertError Do ShowMessage('Escribe Un ID');
@@ -467,5 +512,36 @@ begin
       End;
    End;
 End;
+
+//==============================================================================
+
+function TLibroForm.EliminaSaltoLinea(const Cadena: string): string;
+var
+  Fuente, FuenteEnd: PChar;
+begin
+  Fuente := Pointer(Cadena);
+  FuenteEnd := Fuente + Length(Cadena);
+  while Fuente < FuenteEnd do
+  begin
+    case Fuente^ of
+      #10: Fuente^ := #32;
+      #13: Fuente^ := #32;
+    end;
+    Inc(Fuente);
+  end;
+  Result := Cadena;
+end;
+
+function TLibroForm.EstaAlFinal(Buscado, Texto: string): Boolean;
+var
+  i: Integer;
+begin
+  Result:= False;
+  i:= Length(Buscado);
+  while Texto[Length(Texto)-Length(Buscado)+i] = Buscado[i] do
+    Dec(i);
+  if i = 0 then
+    Result:= True;
+end;
 
 end.

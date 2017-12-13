@@ -1,6 +1,6 @@
 object LibroForm: TLibroForm
-  Left = 343
-  Top = 39
+  Left = 339
+  Top = 75
   Width = 761
   Height = 648
   VertScrollBar.ParentColor = False
@@ -110,12 +110,18 @@ object LibroForm: TLibroForm
   object ComboBox1: TComboBox
     Left = 88
     Top = 29
-    Width = 113
+    Width = 81
     Height = 21
     Hint = 'Selecciona El Tipo De Busqueda'
     Style = csDropDownList
-    Color = cl3DLight
+    Color = clInactiveCaption
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     ItemHeight = 13
+    ParentFont = False
     ParentShowHint = False
     ShowHint = True
     Sorted = True
@@ -129,14 +135,20 @@ object LibroForm: TLibroForm
       'Todo')
   end
   object ComboBox2: TComboBox
-    Left = 216
+    Left = 184
     Top = 29
     Width = 169
     Height = 21
     Hint = 'Selecciona Un Filtro'
     Style = csDropDownList
-    Color = cl3DLight
+    Color = clInactiveCaption
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     ItemHeight = 13
+    ParentFont = False
     ParentShowHint = False
     ShowHint = True
     Sorted = True
@@ -241,6 +253,28 @@ object LibroForm: TLibroForm
     ReadOnly = True
     ShowHint = True
     TabOrder = 9
+  end
+  object ComboBox3: TComboBox
+    Left = 368
+    Top = 29
+    Width = 121
+    Height = 21
+    Style = csDropDownList
+    Color = clBackground
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ItemHeight = 13
+    ItemIndex = 0
+    ParentFont = False
+    TabOrder = 10
+    Text = 'Ascendente'
+    OnChange = ComboBox3Change
+    Items.Strings = (
+      'Ascendente'
+      'Descendente')
   end
   object PopupMenu1: TPopupMenu
     OnPopup = PopupMenu1Popup
