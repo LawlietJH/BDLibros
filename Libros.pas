@@ -124,7 +124,6 @@ begin
    Clipboard.AsText := '';
    tbLibros.FindLast;
    btnQuery.Visible := False;
-   ShowMessage(MainMenu1.Items[0].Caption);
 end;
 
 //==============================================================================
@@ -185,7 +184,7 @@ End;
 
 procedure TLibroForm.ComboBox1Change(Sender: TObject);
 begin
-
+   ComboBox3.ItemIndex := 0;
    Case ComboBox1.ItemIndex Of
    0: Begin
          Comprueba := 'Autor';
@@ -231,9 +230,9 @@ begin
 
       If ComboBoxDato = 'Sin Datos' Then ComboBoxDato := '';
 
-      If Comprueba = 'Saga' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Tomo, Libro, ID')
-      Else If Comprueba = 'Autor' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo, Libro, ID')
-      Else If Comprueba = 'Propietario' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo, Libro, ID'); //NU.
+      If Comprueba = 'Saga' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Tomo')
+      Else If Comprueba = 'Autor' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo')
+      Else If Comprueba = 'Propietario' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo');
 
       qryLibros.Active := True;
 
@@ -402,7 +401,7 @@ Begin
       PopUpMenu1.Items[3].Visible := True;
       PopUpMenu1.Items[4].Visible := True;
       PopUpMenu1.Items[5].Visible := False;
-      PopUpMenu1.Items[5].Visible := False;
+      PopUpMenu1.Items[6].Visible := False;
    End
    Else
    Begin
@@ -503,12 +502,12 @@ procedure TLibroForm.FiltroPersonalizado1Click(Sender: TObject);
 begin
    If btnQuery.Visible = False Then
    Begin
-      MainMenu1.Items[0].Checked := True;
+      MainMenu1.Items[0].Items[0].Checked := True;
       btnQuery.Visible := True
    End
    Else
    Begin
-      MainMenu1.Items[0].Checked := False;
+      MainMenu1.Items[0].Items[0].Checked := False;
       btnQuery.Visible := False;
    End;
 end;
@@ -517,12 +516,12 @@ procedure TLibroForm.BuscarLibro1Click(Sender: TObject);
 begin
    If btnBusqueda.Visible = False Then
    Begin
-      MainMenu1.Items[0].Checked := True;
+      MainMenu1.Items[0].Items[1].Checked := True;
       btnBusqueda.Visible := True;
    End
    Else
    Begin
-      MainMenu1.Items[0].Checked := False;
+      MainMenu1.Items[0].Items[1].Checked := False;
       btnBusqueda.Visible := False
    End;
 end;

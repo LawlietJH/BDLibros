@@ -1,10 +1,11 @@
 object LibroForm: TLibroForm
   Left = 301
   Top = 29
-  Width = 761
-  Height = 665
   VertScrollBar.ParentColor = False
+  BorderStyle = bsSingle
   Caption = 'Base de Datos de Libros'
+  ClientHeight = 596
+  ClientWidth = 745
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,7 +21,7 @@ object LibroForm: TLibroForm
   TextHeight = 13
   object Label2: TLabel
     Left = 6
-    Top = 29
+    Top = 13
     Width = 75
     Height = 19
     Caption = 'Filtrar Por'
@@ -33,7 +34,7 @@ object LibroForm: TLibroForm
   end
   object Label1: TLabel
     Left = 8
-    Top = 402
+    Top = 392
     Width = 238
     Height = 19
     Caption = 'Registro/Modificaci'#243'n de Datos'
@@ -46,7 +47,7 @@ object LibroForm: TLibroForm
   end
   object DBText1: TDBText
     Left = 27
-    Top = 60
+    Top = 47
     Width = 56
     Height = 14
     Hint = 'ID del Libro'
@@ -81,7 +82,7 @@ object LibroForm: TLibroForm
   end
   object btnRefrescar: TBitBtn
     Left = 632
-    Top = 400
+    Top = 390
     Width = 105
     Height = 23
     Caption = 'Refrescar'
@@ -90,7 +91,7 @@ object LibroForm: TLibroForm
   end
   object btnBusqueda: TBitBtn
     Left = 632
-    Top = 55
+    Top = 47
     Width = 105
     Height = 21
     Caption = 'Buscar Libro'
@@ -99,7 +100,7 @@ object LibroForm: TLibroForm
   end
   object btnQuery: TBitBtn
     Left = 632
-    Top = 31
+    Top = 23
     Width = 105
     Height = 21
     Hint = 'Crea Tu Propio Filtro Personalizado'
@@ -111,7 +112,7 @@ object LibroForm: TLibroForm
   end
   object ComboBox1: TComboBox
     Left = 88
-    Top = 29
+    Top = 13
     Width = 89
     Height = 21
     Hint = 'Selecciona El Tipo De Busqueda'
@@ -140,7 +141,7 @@ object LibroForm: TLibroForm
   end
   object ComboBox2: TComboBox
     Left = 312
-    Top = 29
+    Top = 13
     Width = 209
     Height = 21
     Hint = 'Selecciona Un Filtro'
@@ -162,7 +163,7 @@ object LibroForm: TLibroForm
   end
   object dbgQuery: TDBGrid
     Left = 8
-    Top = 80
+    Top = 72
     Width = 729
     Height = 309
     Color = clSilver
@@ -180,7 +181,7 @@ object LibroForm: TLibroForm
   end
   object dbgLibros: TDBGrid
     Left = 8
-    Top = 432
+    Top = 422
     Width = 729
     Height = 165
     Color = clSilver
@@ -197,7 +198,7 @@ object LibroForm: TLibroForm
   end
   object DBEdit1: TDBEdit
     Left = 86
-    Top = 57
+    Top = 44
     Width = 245
     Height = 18
     Hint = 'Nombre del Libro'
@@ -218,7 +219,7 @@ object LibroForm: TLibroForm
   end
   object DBEdit2: TDBEdit
     Left = 330
-    Top = 57
+    Top = 44
     Width = 186
     Height = 18
     Hint = 'Nombre del Autor'
@@ -239,7 +240,7 @@ object LibroForm: TLibroForm
   end
   object DBEdit3: TDBEdit
     Left = 515
-    Top = 57
+    Top = 44
     Width = 78
     Height = 18
     Hint = 'Nombre del Propietario del Libro'
@@ -260,7 +261,7 @@ object LibroForm: TLibroForm
   end
   object ComboBox3: TComboBox
     Left = 192
-    Top = 29
+    Top = 13
     Width = 105
     Height = 21
     Style = csDropDownList
@@ -284,7 +285,7 @@ object LibroForm: TLibroForm
   object PopupMenu1: TPopupMenu
     OnPopup = PopupMenu1Popup
     Left = 536
-    Top = 24
+    Top = 8
     object Copiar1: TMenuItem
       Caption = '&Copiar'
       OnClick = Copiar1Click
@@ -334,7 +335,7 @@ object LibroForm: TLibroForm
     DatabaseName = 'ZioN'
     TableName = 'Libs.db'
     Left = 568
-    Top = 397
+    Top = 387
     object tbLibrosID: TAutoIncField
       FieldName = 'ID'
       ReadOnly = True
@@ -389,12 +390,12 @@ object LibroForm: TLibroForm
   object dsQuery: TDataSource
     DataSet = qryLibros
     Left = 600
-    Top = 24
+    Top = 8
   end
   object dsLibros: TDataSource
     DataSet = tbLibros
     Left = 600
-    Top = 397
+    Top = 387
   end
   object qryLibros: TQuery
     Active = True
@@ -402,7 +403,7 @@ object LibroForm: TLibroForm
     SQL.Strings = (
       'SELECT * FROM Libs')
     Left = 568
-    Top = 24
+    Top = 8
     object qryLibrosID: TIntegerField
       FieldName = 'ID'
       Origin = 'ZION."Libs.DB".ID'
@@ -469,7 +470,7 @@ object LibroForm: TLibroForm
   end
   object MainMenu1: TMainMenu
     Left = 536
-    Top = 397
+    Top = 387
     object Mostrar1: TMenuItem
       Caption = '&Mostrar'
       object FiltroPersonalizado2: TMenuItem
