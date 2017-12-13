@@ -67,7 +67,7 @@ object LibroForm: TLibroForm
     Top = 7
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.2.8'
+    Caption = 'Versi'#243'n 1.2.9'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
@@ -263,6 +263,10 @@ object LibroForm: TLibroForm
     end
     object IrA1: TMenuItem
       Caption = '&Ir A'
+      object Buscar1: TMenuItem
+        Caption = '&Buscar'
+        OnClick = Buscar1Click
+      end
       object Primero1: TMenuItem
         Caption = '&Primero'
         OnClick = Primero1Click

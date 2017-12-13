@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.2.8
+unit Libros;            // By LawlietJH, Versión 1.2.9
 
 interface
 
@@ -63,6 +63,7 @@ type
     Primero1: TMenuItem;
     Ultimo1: TMenuItem;
     Label3: TLabel;
+    Buscar1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -82,6 +83,7 @@ type
     procedure Modificar1Click(Sender: TObject);
     procedure Primero1Click(Sender: TObject);
     procedure Ultimo1Click(Sender: TObject);
+    procedure Buscar1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -380,38 +382,87 @@ var
    Cont:       Integer;
    Total:      Integer;
    Encontrado: Boolean;
+   Componente: String;
 begin
-   If ID <> '' Then
+
+   Componente := TComponent(PopUpMenu1.PopupComponent).Name;
+   ShowMessage(TComponent(PopUpMenu1.PopupComponent).Name);
+   If Componente = 'dbgLibros' Then
    Begin
-      Cont := 0;
-      Encontrado := False;
+      If ID <> '' Then
+      Begin
+        Cont := 0;
+        Encontrado := False;
 
-      tbLibros.FindLast;
-      Total := tbLibros.FindField('ID').AsInteger;
-      tbLibros.FindFirst;
+        tbLibros.FindLast;
+        Total := tbLibros.FindField('ID').AsInteger;
+        tbLibros.FindFirst;
 
-      Try
-         If StrToInt(ID) > Total Then
-         Begin
-            ShowMessage('Ese ID No Existe!');
-            tbLibros.FindLast;
-         End
-         Else
-         Begin
-            While (not Encontrado) and (Cont < Total) do
-            Begin
-               If tbLibros.FindField('ID').AsInteger = StrToInt(ID) Then
-               Begin
-                  Encontrado := True;
-                  Break;
-               End;
-               Cont := Cont + 1;
-               tbLibros.Next;
-            End;
-         End;
-      Except On EConvertError Do ShowMessage('Escribe Un Número');
+        Try
+           If StrToInt(ID) > Total Then
+           Begin
+              ShowMessage('Ese ID No Existe!');
+              tbLibros.FindLast;
+           End
+           Else
+           Begin
+              While (not Encontrado) and (Cont < Total) do
+              Begin
+                 If tbLibros.FindField('ID').AsInteger = StrToInt(ID) Then
+                 Begin
+                    Encontrado := True;
+                    Break;
+                 End;
+                 Cont := Cont + 1;
+                 tbLibros.Next;
+              End;
+           End;
+        Except On EConvertError Do ShowMessage('Escribe Un Número');
+        End;
+      End;
+   End Else
+   If Componente = 'dbgQuery' Then
+   Begin
+      If ID <> '' Then
+      Begin
+        Cont := 0;
+        Encontrado := False;
+
+        qryLibros.FindLast;
+        Total := qryLibros.FindField('ID').AsInteger;
+        qryLibros.FindFirst;
+
+        Try
+           If StrToInt(ID) > Total Then
+           Begin
+              ShowMessage('Ese ID No Existe!');
+              qryLibros.FindLast;
+           End
+           Else
+           Begin
+              While (not Encontrado) and (Cont < Total) do
+              Begin
+                 If qryLibros.FindField('ID').AsInteger = StrToInt(ID) Then
+                 Begin
+                    Encontrado := True;
+                    Break;
+                 End;
+                 Cont := Cont + 1;
+                 qryLibros.Next;
+              End;
+           End;
+        Except On EConvertError Do ShowMessage('Escribe Un Número');
+        End;
       End;
    End;
 End;
+
+procedure TLibroForm.Buscar1Click(Sender: TObject);
+var
+   ID: String;
+begin
+   ID := InputBox('Buscar ID','Escribe Un Número ID', '');
+   BuscarID(ID);
+end;
 
 end.
