@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.2
+unit Libros;            // By LawlietJH, Versión 1.3.3
 
 interface
 
@@ -65,6 +65,8 @@ type
     qryLibrosFechaDebolucion: TDateField;
     qryLibrosFechaRegalo: TDateField;
     qryLibrosComentarios: TStringField;
+    FiltroPersonalizado1: TMenuItem;
+    BuscarLibro1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -89,6 +91,8 @@ type
     procedure EjecutarQuery(InputString: String);
     function EstaAlFinal(Buscado, Texto: string): Boolean;
     function EliminaSaltoLinea(const Cadena: string): string;
+    procedure FiltroPersonalizado1Click(Sender: TObject);
+    procedure BuscarLibro1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -111,6 +115,7 @@ begin
    ComboBox1.ItemIndex := 4;
    Clipboard.AsText := '';
    tbLibros.FindLast;
+   btnQuery.Visible := False;
 end;
 
 //==============================================================================
@@ -129,6 +134,12 @@ var
    InputString: String;
 begin
    InputString := InputBox('Buscar Libro','Escribe Un Indicio del Libro', '');
+
+   ComboBox1.ItemIndex := 4;
+   ComboBox2.Visible := False;
+   ComboBox3.ItemIndex := 0;
+
+   Comprueba := 'Buscar Libro';
 
    If InputString <> '' Then
    Begin
@@ -211,7 +222,7 @@ begin
 
       If ComboBoxDato = 'Sin Datos' Then ComboBoxDato := '';
 
-      If Comprueba = 'Saga' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Tomo')
+      If Comprueba = 'Saga' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Tomo, Libro, ID')
       Else If Comprueba = 'Autor' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo, Libro, ID')
       Else If Comprueba = 'Propietario' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo, Libro, ID'); //NU.
 
@@ -224,12 +235,14 @@ procedure TLibroForm.ComboBox3Change(Sender: TObject);
 Var
    Query:   String;
 begin
-   if (ComboBox1.Text = 'Todo') or (ComboBox2.Text = 'Todos') Then
+
+   Query := Trim(qryLibros.SQL.Text);
+   Query := EliminaSaltoLinea(Query);
+
+   If (ComboBox1.Text = 'Todo') or (ComboBox2.Text = 'Todos') Then
    Begin
-      if ComboBox3.Text = 'Descendente' Then
+      If ComboBox3.Text = 'Descendente' Then
       Begin
-         Query := Trim(qryLibros.SQL.Text);
-         Query := EliminaSaltoLinea(Query);
          If NOT EstaAlFinal('DESC', Query) Then
          Begin
             If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-19);
@@ -240,10 +253,8 @@ begin
             qryLibros.Active := True;
          End;
       End Else
-      if ComboBox3.Text = 'Ascendente' Then
+      If ComboBox3.Text = 'Ascendente' Then
       Begin
-         Query := Trim(qryLibros.SQL.Text);
-         Query := EliminaSaltoLinea(Query);
          If NOT EstaAlFinal('ASC', Query) Then
          Begin
             If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-20);
@@ -256,54 +267,60 @@ begin
       End Else
       If ComboBox3.Text = 'Normal' Then
       Begin
-         qryLibros.Active := False;
-         qryLibros.SQL.Clear;
-         qryLibros.SQL.Add('SELECT * FROM Libs');
-         qryLibros.Active := True;
+         If EstaAlFinal('%'')', Query) or EstaAlFinal('ASC', Query) or EstaAlFinal('DESC', Query) Then
+         Begin
+            If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-19)
+            Else If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-20);
+            qryLibros.Active := False;
+            qryLibros.SQL.Clear;
+            qryLibros.SQL.Add(Query);
+            qryLibros.Active := True;
+         End
+         Else
+         Begin
+            qryLibros.Active := False;
+            qryLibros.SQL.Clear;
+            qryLibros.SQL.Add('SELECT * FROM Libs');
+            qryLibros.Active := True;
+         End;
       End;
    End
    Else
    Begin
-      if ComboBox3.Text = 'Descendente' Then
+      If ComboBox3.Text = 'Descendente' Then
       Begin
-        Query := Trim(qryLibros.SQL.Text);
-        Query := EliminaSaltoLinea(Query);
-        If NOT EstaAlFinal('DESC', Query) Then
-        Begin
-           If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-4);
-           Query := Query + ' DESC';
-           qryLibros.Active := False;
-           qryLibros.SQL.Clear;
-           qryLibros.SQL.Add(Query);
-           qryLibros.Active := True;
-        End;
+         If NOT EstaAlFinal('DESC', Query) Then
+         Begin
+            If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-4);
+            Query := Query + ' DESC';
+            qryLibros.Active := False;
+            qryLibros.SQL.Clear;
+            qryLibros.SQL.Add(Query);
+            qryLibros.Active := True;
+         End;
       End Else
       If ComboBox3.Text = 'Ascendente' Then
       Begin
-        Query := Trim(qryLibros.SQL.Text);
-        Query := EliminaSaltoLinea(Query);
-        If NOT EstaAlFinal('ASC', Query) Then
-        Begin
-           If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-5);
-           Query := Query + ' ASC';
-           qryLibros.Active := False;
-           qryLibros.SQL.Clear;
-           qryLibros.SQL.Add(Query);
-           qryLibros.Active := True;
-        End;
+         If NOT EstaAlFinal('ASC', Query) Then
+         Begin
+            If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-5);
+            Query := Query + ' ASC';
+            qryLibros.Active := False;
+            qryLibros.SQL.Clear;
+            qryLibros.SQL.Add(Query);
+            qryLibros.Active := True;
+         End;
       End Else
       If ComboBox3.Text = 'Normal' Then
       Begin
-        Query := Trim(qryLibros.SQL.Text);
-        Query := EliminaSaltoLinea(Query);
-        If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-4)
-        Else If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-5);
-        qryLibros.Active := False;
-        qryLibros.SQL.Clear;
-        qryLibros.SQL.Add(Query);
-        qryLibros.Active := True;
-        //Posy := pos('D',Query);
-        //For X := 0 To 4 Do Delete(Query, Posy-1, 1);
+         If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-4)
+         Else If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-5);
+         qryLibros.Active := False;
+         qryLibros.SQL.Clear;
+         qryLibros.SQL.Add(Query);
+         qryLibros.Active := True;
+         //Posy := pos('D',Query);
+         //For X := 0 To 4 Do Delete(Query, Posy-1, 1);
       End;
    End;
 end;
@@ -359,16 +376,34 @@ End;
 procedure TLibroForm.PopupMenu1Popup(Sender: TObject);
 Begin
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then
-   Begin                                 
+   Begin
+      PopUpMenu1.Items[0].Visible := True;
       PopUpMenu1.Items[1].Visible := True;
       PopUpMenu1.Items[2].Visible := True;
       PopUpMenu1.Items[3].Visible := False;
+      PopUpMenu1.Items[4].Visible := True;
+      PopUpMenu1.Items[5].Visible := False;
+      PopUpMenu1.Items[6].Visible := False;
    End
    Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then
    Begin
+      PopUpMenu1.Items[0].Visible := True;
       PopUpMenu1.Items[1].Visible := False;
       PopUpMenu1.Items[2].Visible := False;
       PopUpMenu1.Items[3].Visible := True;
+      PopUpMenu1.Items[4].Visible := True;
+      PopUpMenu1.Items[5].Visible := False;
+      PopUpMenu1.Items[5].Visible := False;
+   End
+   Else
+   Begin
+      PopUpMenu1.Items[0].Visible := False;
+      PopUpMenu1.Items[1].Visible := False;
+      PopUpMenu1.Items[2].Visible := False;
+      PopUpMenu1.Items[3].Visible := False;
+      PopUpMenu1.Items[4].Visible := False;
+      PopUpMenu1.Items[5].Visible := True;
+      PopUpMenu1.Items[6].Visible := True;
    End;
 End;
 
@@ -454,6 +489,18 @@ Begin
    dbgLibros.DataSource.Edit;
    dbgLibros.SelectedField.Text := Clipboard.AsText;
 End;
+
+procedure TLibroForm.FiltroPersonalizado1Click(Sender: TObject);
+begin
+   If btnQuery.Visible = False Then btnQuery.Visible := True
+   Else btnQuery.Visible := False;
+end;
+
+procedure TLibroForm.BuscarLibro1Click(Sender: TObject);
+begin
+   If btnBusqueda.Visible = False Then btnBusqueda.Visible := True
+   Else btnBusqueda.Visible := False
+end;
 
 //==============================================================================
 

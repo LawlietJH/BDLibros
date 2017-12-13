@@ -12,6 +12,7 @@ object LibroForm: TLibroForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  PopupMenu = PopupMenu1
   Position = poScreenCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -63,11 +64,11 @@ object LibroForm: TLibroForm
     ShowHint = True
   end
   object Label3: TLabel
-    Left = 336
-    Top = 7
+    Left = 672
+    Top = 5
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.3.2'
+    Caption = 'Versi'#243'n 1.3.3'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
@@ -88,18 +89,18 @@ object LibroForm: TLibroForm
   end
   object btnBusqueda: TBitBtn
     Left = 632
-    Top = 48
+    Top = 55
     Width = 105
-    Height = 23
+    Height = 21
     Caption = 'Buscar Libro'
     TabOrder = 1
     OnClick = btnBusquedaClick
   end
   object btnQuery: TBitBtn
     Left = 632
-    Top = 24
+    Top = 31
     Width = 105
-    Height = 23
+    Height = 21
     Hint = 'Crea Tu Propio Filtro Personalizado'
     Caption = 'Filtro Personalizado'
     ParentShowHint = False
@@ -110,16 +111,16 @@ object LibroForm: TLibroForm
   object ComboBox1: TComboBox
     Left = 88
     Top = 29
-    Width = 81
+    Width = 89
     Height = 21
     Hint = 'Selecciona El Tipo De Busqueda'
     Style = csDropDownList
-    Color = clInactiveCaption
+    Color = clDefault
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -11
+    Font.Color = clGradientActiveCaption
+    Font.Height = -12
     Font.Name = 'MS Sans Serif'
-    Font.Style = []
+    Font.Style = [fsBold]
     ItemHeight = 13
     ItemIndex = 4
     ParentFont = False
@@ -137,18 +138,18 @@ object LibroForm: TLibroForm
       'Todo')
   end
   object ComboBox2: TComboBox
-    Left = 320
+    Left = 312
     Top = 29
-    Width = 169
+    Width = 209
     Height = 21
     Hint = 'Selecciona Un Filtro'
     Style = csDropDownList
-    Color = clInactiveCaption
+    Color = clDefault
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -11
+    Font.Color = clGradientActiveCaption
+    Font.Height = -12
     Font.Name = 'MS Sans Serif'
-    Font.Style = []
+    Font.Style = [fsBold]
     ItemHeight = 13
     ParentFont = False
     ParentShowHint = False
@@ -257,17 +258,17 @@ object LibroForm: TLibroForm
     TabOrder = 9
   end
   object ComboBox3: TComboBox
-    Left = 184
+    Left = 192
     Top = 29
-    Width = 121
+    Width = 105
     Height = 21
     Style = csDropDownList
-    Color = clBackground
+    Color = clDefault
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindow
-    Font.Height = -11
+    Font.Color = clGradientActiveCaption
+    Font.Height = -12
     Font.Name = 'MS Sans Serif'
-    Font.Style = []
+    Font.Style = [fsBold]
     ItemHeight = 13
     ItemIndex = 0
     ParentFont = False
@@ -281,7 +282,8 @@ object LibroForm: TLibroForm
   end
   object PopupMenu1: TPopupMenu
     OnPopup = PopupMenu1Popup
-    Left = 640
+    Left = 536
+    Top = 24
     object Copiar1: TMenuItem
       Caption = '&Copiar'
       OnClick = Copiar1Click
@@ -312,6 +314,18 @@ object LibroForm: TLibroForm
         Caption = '&Ultimo'
         OnClick = Ultimo1Click
       end
+    end
+    object FiltroPersonalizado1: TMenuItem
+      AutoCheck = True
+      Caption = '&Filtro Personalizado'
+      OnClick = FiltroPersonalizado1Click
+    end
+    object BuscarLibro1: TMenuItem
+      AutoCheck = True
+      Caption = '&Buscar Libro'
+      Checked = True
+      Default = True
+      OnClick = BuscarLibro1Click
     end
   end
   object tbLibros: TTable
@@ -373,7 +387,8 @@ object LibroForm: TLibroForm
   end
   object dsQuery: TDataSource
     DataSet = qryLibros
-    Left = 704
+    Left = 600
+    Top = 24
   end
   object dsLibros: TDataSource
     DataSet = tbLibros
@@ -385,7 +400,8 @@ object LibroForm: TLibroForm
     DatabaseName = 'ZioN'
     SQL.Strings = (
       'SELECT * FROM Libs')
-    Left = 672
+    Left = 568
+    Top = 24
     object qryLibrosID: TIntegerField
       FieldName = 'ID'
       Origin = 'ZION."Libs.DB".ID'
