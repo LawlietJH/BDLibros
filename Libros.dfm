@@ -67,7 +67,7 @@ object LibroForm: TLibroForm
     Top = 7
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.3.0'
+    Caption = 'Versi'#243'n 1.3.2'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
@@ -121,11 +121,13 @@ object LibroForm: TLibroForm
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ItemHeight = 13
+    ItemIndex = 4
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
     Sorted = True
     TabOrder = 3
+    Text = 'Todo'
     OnChange = ComboBox1Change
     Items.Strings = (
       'Autores'
@@ -135,7 +137,7 @@ object LibroForm: TLibroForm
       'Todo')
   end
   object ComboBox2: TComboBox
-    Left = 184
+    Left = 320
     Top = 29
     Width = 169
     Height = 21
@@ -255,7 +257,7 @@ object LibroForm: TLibroForm
     TabOrder = 9
   end
   object ComboBox3: TComboBox
-    Left = 368
+    Left = 184
     Top = 29
     Width = 121
     Height = 21
@@ -270,9 +272,10 @@ object LibroForm: TLibroForm
     ItemIndex = 0
     ParentFont = False
     TabOrder = 10
-    Text = 'Ascendente'
+    Text = 'Normal'
     OnChange = ComboBox3Change
     Items.Strings = (
+      'Normal'
       'Ascendente'
       'Descendente')
   end

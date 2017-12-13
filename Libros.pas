@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.1
+unit Libros;            // By LawlietJH, Versión 1.3.2
 
 interface
 
@@ -104,12 +104,13 @@ implementation
 
 {$R *.dfm}
 
+//==============================================================================
+
 procedure TLibroForm.FormCreate(Sender: TObject);
 begin
    ComboBox1.ItemIndex := 4;
    Clipboard.AsText := '';
    tbLibros.FindLast;
-   ComboBox3.Visible := False;
 end;
 
 //==============================================================================
@@ -165,8 +166,6 @@ End;
 procedure TLibroForm.ComboBox1Change(Sender: TObject);
 begin
 
-   ComboBox3.Visible := False;
-
    Case ComboBox1.ItemIndex Of
    0: Begin
          Comprueba := 'Autor';
@@ -199,8 +198,6 @@ begin
 
    If ComboBox2.ItemIndex = 0 Then
    Begin
-      ComboBox3.Visible := False;
-
       qryLibros.Active := False;
       qryLibros.SQL.Clear;
       qryLibros.SQL.Add('SELECT * FROM Libs');
@@ -208,9 +205,7 @@ begin
    End
    Else
    Begin
-
-      ComboBox3.Visible := True;
-
+   
       qryLibros.Active := False;
       qryLibros.SQL.Clear;
 
@@ -228,35 +223,88 @@ end;
 procedure TLibroForm.ComboBox3Change(Sender: TObject);
 Var
    Query:   String;
-   X, Posy: Integer;
 begin
-   if ComboBox3.Text = 'Descendente' Then
+   if (ComboBox1.Text = 'Todo') or (ComboBox2.Text = 'Todos') Then
    Begin
-      Query := Trim(qryLibros.SQL.Text);
-      Query := EliminaSaltoLinea(Query);
-      If NOT EstaAlFinal('DESC', Query) Then
+      if ComboBox3.Text = 'Descendente' Then
       Begin
-         Query := Query + ' DESC';
+         Query := Trim(qryLibros.SQL.Text);
+         Query := EliminaSaltoLinea(Query);
+         If NOT EstaAlFinal('DESC', Query) Then
+         Begin
+            If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-19);
+            Query := Query + ' ORDER BY Libro DESC';
+            qryLibros.Active := False;
+            qryLibros.SQL.Clear;
+            qryLibros.SQL.Add(Query);
+            qryLibros.Active := True;
+         End;
+      End Else
+      if ComboBox3.Text = 'Ascendente' Then
+      Begin
+         Query := Trim(qryLibros.SQL.Text);
+         Query := EliminaSaltoLinea(Query);
+         If NOT EstaAlFinal('ASC', Query) Then
+         Begin
+            If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-20);
+            Query := Query + ' ORDER BY Libro ASC';
+            qryLibros.Active := False;
+            qryLibros.SQL.Clear;
+            qryLibros.SQL.Add(Query);
+            qryLibros.Active := True;
+         End;
+      End Else
+      If ComboBox3.Text = 'Normal' Then
+      Begin
          qryLibros.Active := False;
          qryLibros.SQL.Clear;
-         qryLibros.SQL.Add(Query);
+         qryLibros.SQL.Add('SELECT * FROM Libs');
          qryLibros.Active := True;
       End;
-   End Else
-   If ComboBox3.Text = 'Ascendente' Then
+   End
+   Else
    Begin
-      Query := Trim(qryLibros.SQL.Text);
-      Query := EliminaSaltoLinea(Query);
-      If EstaAlFinal('DESC', Query) Then
+      if ComboBox3.Text = 'Descendente' Then
       Begin
-         SetLength(Query, Length(Query)-5);
-         qryLibros.Active := False;
-         qryLibros.SQL.Clear;
-         qryLibros.SQL.Add(Query);
-         qryLibros.Active := True;
+        Query := Trim(qryLibros.SQL.Text);
+        Query := EliminaSaltoLinea(Query);
+        If NOT EstaAlFinal('DESC', Query) Then
+        Begin
+           If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-4);
+           Query := Query + ' DESC';
+           qryLibros.Active := False;
+           qryLibros.SQL.Clear;
+           qryLibros.SQL.Add(Query);
+           qryLibros.Active := True;
+        End;
+      End Else
+      If ComboBox3.Text = 'Ascendente' Then
+      Begin
+        Query := Trim(qryLibros.SQL.Text);
+        Query := EliminaSaltoLinea(Query);
+        If NOT EstaAlFinal('ASC', Query) Then
+        Begin
+           If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-5);
+           Query := Query + ' ASC';
+           qryLibros.Active := False;
+           qryLibros.SQL.Clear;
+           qryLibros.SQL.Add(Query);
+           qryLibros.Active := True;
+        End;
+      End Else
+      If ComboBox3.Text = 'Normal' Then
+      Begin
+        Query := Trim(qryLibros.SQL.Text);
+        Query := EliminaSaltoLinea(Query);
+        If EstaAlFinal('ASC', Query) Then SetLength(Query, Length(Query)-4)
+        Else If EstaAlFinal('DESC', Query) Then SetLength(Query, Length(Query)-5);
+        qryLibros.Active := False;
+        qryLibros.SQL.Clear;
+        qryLibros.SQL.Add(Query);
+        qryLibros.Active := True;
+        //Posy := pos('D',Query);
+        //For X := 0 To 4 Do Delete(Query, Posy-1, 1);
       End;
-      //Posy := pos('D',Query);
-      //For X := 0 To 4 Do Delete(Query, Posy-1, 1);
    End;
 end;
 
