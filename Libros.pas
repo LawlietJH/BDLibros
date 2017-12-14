@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.4
+unit Libros;            // By LawlietJH, Versión 1.3.6
 
 interface
 
@@ -22,7 +22,7 @@ type
     IrA1: TMenuItem;
     Primero1: TMenuItem;
     Ultimo1: TMenuItem;
-    Label3: TLabel;
+    Version: TLabel;
     Buscar1: TMenuItem;
     ComboBox3: TComboBox;
     Copiar1: TMenuItem;
@@ -72,6 +72,9 @@ type
     FiltroPersonalizado2: TMenuItem;
     BuscarLibro2: TMenuItem;
     Refrescar1: TMenuItem;
+    LineadeDatos1: TMenuItem;
+    VerQuery1: TMenuItem;
+    Refrescar2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -101,6 +104,9 @@ type
     procedure FiltroPersonalizado2Click(Sender: TObject);
     procedure BuscarLibro2Click(Sender: TObject);
     procedure Refrescar1Click(Sender: TObject);
+    procedure LineadeDatos1Click(Sender: TObject);
+    procedure VerQuery1Click(Sender: TObject);
+    procedure Refrescar2Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -191,7 +197,7 @@ begin
          GetDatos();
       End;
    1: Begin
-         Query('SELECT * FROM Libs WHERE (LOWER(Prestado) = ''s'' or LOWER(Prestado) = ''si'')');
+         Query('SELECT * FROM Libs WHERE (LOWER(Prestado) = ''s'' or LOWER(Prestado) = ''si'') ORDER BY ID');
       End;
    2: Begin
          Comprueba := 'Propietario';
@@ -500,21 +506,83 @@ End;
 
 procedure TLibroForm.FiltroPersonalizado1Click(Sender: TObject);
 begin
+   Version.Left := 672;
    If btnQuery.Visible = False Then
    Begin
       MainMenu1.Items[0].Items[0].Checked := True;
-      btnQuery.Visible := True
+      If btnBusqueda.Visible = True Then
+      Begin
+         If btnRefrescar.Visible = True Then
+         Begin
+            Version.Left := 560;
+            btnQuery.Top := 4;
+         End
+         Else btnQuery.Top := 26;
+      End
+      Else
+      Begin
+         If btnRefrescar.Visible = True Then btnQuery.Top := 26
+         Else btnQuery.Top := 48;
+      End;
+      btnQuery.Visible := True;
    End
    Else
    Begin
       MainMenu1.Items[0].Items[0].Checked := False;
       btnQuery.Visible := False;
    End;
+
+   {If btnQuery.Visible = False Then
+   Begin
+      MainMenu1.Items[0].Items[0].Checked := True;
+      btnQuery.Visible := True;
+      Version.Left := 560;
+   End
+   Else
+   Begin
+      MainMenu1.Items[0].Items[0].Checked := False;
+      btnQuery.Visible := False;
+      Version.Left := 672;
+   End;}
 end;
 
 procedure TLibroForm.BuscarLibro1Click(Sender: TObject);
 begin
+   Version.Left := 672;
    If btnBusqueda.Visible = False Then
+   Begin
+      MainMenu1.Items[0].Items[1].Checked := True;
+      If btnRefrescar.Visible = True Then
+      Begin
+         If btnQuery.Visible = True Then
+         Begin
+            Version.Left := 560;
+            btnQuery.Top := 4;
+         End;
+         btnBusqueda.Top := 26;
+      End
+      Else
+      Begin
+         If btnQuery.Visible = True Then btnQuery.Top := 26;
+         btnBusqueda.Top := 48;
+      End;
+      btnBusqueda.Visible := True;
+   End
+   Else
+   Begin
+      MainMenu1.Items[0].Items[1].Checked := False;
+      If btnRefrescar.Visible = True Then
+      Begin
+         If btnQuery.Visible = True Then btnQuery.Top := 26;
+      End
+      Else
+      Begin
+         If btnQuery.Visible = True Then btnQuery.Top := 48;
+      End;
+      btnBusqueda.Visible := False;
+   End;
+
+   {If btnBusqueda.Visible = False Then
    Begin
       MainMenu1.Items[0].Items[1].Checked := True;
       btnBusqueda.Visible := True;
@@ -523,6 +591,38 @@ begin
    Begin
       MainMenu1.Items[0].Items[1].Checked := False;
       btnBusqueda.Visible := False
+   End;}
+
+end;
+
+procedure TLibroForm.Refrescar2Click(Sender: TObject);
+begin
+   Version.Left := 672;
+   If btnRefrescar.Visible = False Then
+   Begin
+      MainMenu1.Items[0].Items[2].Checked := True;
+      btnRefrescar.Visible := True;
+      If btnQuery.Visible = True Then
+      Begin
+         If btnBusqueda.Visible = True Then
+         Begin
+            Version.Left := 560;
+            btnQuery.Top := 4
+         End
+         Else btnQuery.Top := 26;
+      End;
+      btnBusqueda.Top := 26;
+   End
+   Else If btnRefrescar.Visible = True Then
+   Begin
+      MainMenu1.Items[0].Items[2].Checked := False;
+      btnRefrescar.Visible := False;
+      If btnQuery.Visible = True Then
+      Begin
+         If btnBusqueda.Visible = True Then btnQuery.Top := 26
+         Else btnQuery.Top := 48;
+      End;
+      btnBusqueda.Top := 48;
    End;
 end;
 
@@ -530,10 +630,25 @@ end;
 
 procedure TLibroForm.FiltroPersonalizado2Click(Sender: TObject);
 begin
+   Version.Left := 672;
    If btnQuery.Visible = False Then
    Begin
       PopUpMenu1.Items[5].Checked := True;
-      btnQuery.Visible := True
+      If btnBusqueda.Visible = True Then
+      Begin
+         If btnRefrescar.Visible = True Then
+         Begin
+            Version.Left := 560;
+            btnQuery.Top := 4;
+         End
+         Else btnQuery.Top := 26;
+      End
+      Else
+      Begin
+         If btnRefrescar.Visible = True Then btnQuery.Top := 26
+         Else btnQuery.Top := 48;
+      End;
+      btnQuery.Visible := True;
    End
    Else
    Begin
@@ -544,29 +659,111 @@ end;
 
 procedure TLibroForm.BuscarLibro2Click(Sender: TObject);
 begin
+   Version.Left := 672;
    If btnBusqueda.Visible = False Then
    Begin
       PopUpMenu1.Items[6].Checked := True;
+      If btnRefrescar.Visible = True Then
+      Begin
+         If btnQuery.Visible = True Then
+         Begin
+            Version.Left := 560;
+            btnQuery.Top := 4;
+         End;
+         btnBusqueda.Top := 26;
+      End
+      Else
+      Begin
+         If btnQuery.Visible = True Then btnQuery.Top := 26;
+         btnBusqueda.Top := 48;
+      End;
       btnBusqueda.Visible := True;
    End
    Else
    Begin
       PopUpMenu1.Items[6].Checked := False;
-      btnBusqueda.Visible := False
+      If btnRefrescar.Visible = True Then
+      Begin
+         If btnQuery.Visible = True Then btnQuery.Top := 26;
+      End
+      Else
+      Begin
+         If btnQuery.Visible = True Then btnQuery.Top := 48;
+      End;
+      btnBusqueda.Visible := False;
    End;
 end;
 
 procedure TLibroForm.Refrescar1Click(Sender: TObject);
 begin
+   Version.Left := 672;
    If btnRefrescar.Visible = False Then
    Begin
-      //PopUpMenu1.Items[7].Checked := True;
+      PopUpMenu1.Items[7].Checked := True;
       btnRefrescar.Visible := True;
+      If btnQuery.Visible = True Then
+      Begin
+         If btnBusqueda.Visible = True Then
+         Begin
+            Version.Left := 560;
+            btnQuery.Top := 4
+         End
+         Else btnQuery.Top := 26;
+      End;
+      btnBusqueda.Top := 26;
    End
-   Else
+   Else If btnRefrescar.Visible = True Then
    Begin
-      //PopUpMenu1.Items[7].Checked := False;
-      btnRefrescar.Visible := False
+      PopUpMenu1.Items[7].Checked := False;
+      btnRefrescar.Visible := False;
+      If btnQuery.Visible = True Then
+      Begin
+         If btnBusqueda.Visible = True Then btnQuery.Top := 26
+         Else btnQuery.Top := 48;
+      End;
+      btnBusqueda.Top := 48;
+   End;
+end;
+
+procedure TLibroForm.LineadeDatos1Click(Sender: TObject);
+begin
+   If DBText1.Visible = True Then
+   Begin
+      Label2.Top := 42;
+      ComboBox1.Top := 42;
+      ComboBox2.Top := 42;
+      ComboBox3.Top := 42;
+      DBText1.Visible := False;
+      DBEdit1.Visible := False;
+      DBEdit2.Visible := False;
+      DBEdit3.Visible := False;
+   End Else
+   If DBText1.Visible = False Then
+   Begin
+      Label2.Top := 14;
+      ComboBox1.Top := 14;
+      ComboBox2.Top := 14;
+      ComboBox3.Top := 14;
+      DBText1.Visible := True;
+      DBEdit1.Visible := True;
+      DBEdit2.Visible := True;
+      DBEdit3.Visible := True;
+   End;
+end;
+
+procedure TLibroForm.VerQuery1Click(Sender: TObject);
+begin
+   If dbgLibros.Visible = True Then
+   Begin
+      dbgQuery.Height := 515;
+      dbgLibros.Visible := False;
+      Label1.Visible := False;
+   End Else
+   If dbgLibros.Visible = False Then
+   Begin
+      dbgQuery.Height := 309;
+      dbgLibros.Visible := True;
+      Label1.Visible := True;
    End;
 end;
 

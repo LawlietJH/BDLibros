@@ -1,4 +1,4 @@
-program BDLibros;            // By LawlietJH, Versión 1.3.4
+program BDLibros;            // By LawlietJH, Versión 1.3.6
 
 uses
   Forms,

@@ -65,12 +65,12 @@ object LibroForm: TLibroForm
     ParentShowHint = False
     ShowHint = True
   end
-  object Label3: TLabel
+  object Version: TLabel
     Left = 672
-    Top = 5
+    Top = 6
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.3.4'
+    Caption = 'Versi'#243'n 1.3.6'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
@@ -82,16 +82,16 @@ object LibroForm: TLibroForm
   end
   object btnRefrescar: TBitBtn
     Left = 632
-    Top = 390
+    Top = 48
     Width = 105
-    Height = 23
+    Height = 21
     Caption = 'Refrescar'
     TabOrder = 0
     OnClick = btnRefrescarClick
   end
   object btnBusqueda: TBitBtn
     Left = 632
-    Top = 47
+    Top = 26
     Width = 105
     Height = 21
     Caption = 'Buscar Libro'
@@ -100,7 +100,7 @@ object LibroForm: TLibroForm
   end
   object btnQuery: TBitBtn
     Left = 632
-    Top = 23
+    Top = 4
     Width = 105
     Height = 21
     Hint = 'Crea Tu Propio Filtro Personalizado'
@@ -284,8 +284,8 @@ object LibroForm: TLibroForm
   end
   object PopupMenu1: TPopupMenu
     OnPopup = PopupMenu1Popup
-    Left = 536
-    Top = 8
+    Left = 264
+    Top = 387
     object Copiar1: TMenuItem
       Caption = '&Copiar'
       OnClick = Copiar1Click
@@ -328,6 +328,12 @@ object LibroForm: TLibroForm
       Checked = True
       Default = True
       OnClick = BuscarLibro1Click
+    end
+    object Refrescar2: TMenuItem
+      AutoCheck = True
+      Caption = '&Refrescar'
+      Checked = True
+      OnClick = Refrescar2Click
     end
   end
   object tbLibros: TTable
@@ -389,8 +395,8 @@ object LibroForm: TLibroForm
   end
   object dsQuery: TDataSource
     DataSet = qryLibros
-    Left = 600
-    Top = 8
+    Left = 328
+    Top = 387
   end
   object dsLibros: TDataSource
     DataSet = tbLibros
@@ -402,8 +408,8 @@ object LibroForm: TLibroForm
     DatabaseName = 'ZioN'
     SQL.Strings = (
       'SELECT * FROM Libs')
-    Left = 568
-    Top = 8
+    Left = 296
+    Top = 387
     object qryLibrosID: TIntegerField
       FieldName = 'ID'
       Origin = 'ZION."Libs.DB".ID'
@@ -472,10 +478,10 @@ object LibroForm: TLibroForm
     Left = 536
     Top = 387
     object Mostrar1: TMenuItem
-      Caption = '&Mostrar'
+      Caption = '&Ver'
       object FiltroPersonalizado2: TMenuItem
         AutoCheck = True
-        Caption = '&Filtro Personalizado'
+        Caption = 'Filtro &Personalizado'
         OnClick = FiltroPersonalizado2Click
       end
       object BuscarLibro2: TMenuItem
@@ -489,6 +495,18 @@ object LibroForm: TLibroForm
         Caption = '&Refrescar'
         Checked = True
         OnClick = Refrescar1Click
+      end
+      object LineadeDatos1: TMenuItem
+        AutoCheck = True
+        Caption = '&Linea de Datos Actuales'
+        Checked = True
+        OnClick = LineadeDatos1Click
+      end
+      object VerQuery1: TMenuItem
+        AutoCheck = True
+        Caption = '&Ver Registro'
+        Checked = True
+        OnClick = VerQuery1Click
       end
     end
   end
