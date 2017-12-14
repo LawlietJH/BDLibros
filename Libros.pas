@@ -398,6 +398,7 @@ Begin
       PopUpMenu1.Items[4].Visible := True;
       PopUpMenu1.Items[5].Visible := False;
       PopUpMenu1.Items[6].Visible := False;
+      PopUpMenu1.Items[7].Visible := False;
    End
    Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then
    Begin
@@ -408,6 +409,7 @@ Begin
       PopUpMenu1.Items[4].Visible := True;
       PopUpMenu1.Items[5].Visible := False;
       PopUpMenu1.Items[6].Visible := False;
+      PopUpMenu1.Items[7].Visible := False;
    End
    Else
    Begin
@@ -418,6 +420,7 @@ Begin
       PopUpMenu1.Items[4].Visible := False;
       PopUpMenu1.Items[5].Visible := True;
       PopUpMenu1.Items[6].Visible := True;
+      PopUpMenu1.Items[7].Visible := True;
    End;
 End;
 
