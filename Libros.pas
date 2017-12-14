@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.6
+unit Libros;            // By LawlietJH, Versión 1.3.7
 
 interface
 
@@ -73,8 +73,10 @@ type
     BuscarLibro2: TMenuItem;
     Refrescar1: TMenuItem;
     LineadeDatos1: TMenuItem;
-    VerQuery1: TMenuItem;
     Refrescar2: TMenuItem;
+    Mostar1: TMenuItem;
+    SoloRegistro1: TMenuItem;
+    SoloFiltro1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -105,8 +107,9 @@ type
     procedure BuscarLibro2Click(Sender: TObject);
     procedure Refrescar1Click(Sender: TObject);
     procedure LineadeDatos1Click(Sender: TObject);
-    procedure VerQuery1Click(Sender: TObject);
     procedure Refrescar2Click(Sender: TObject);
+    procedure SoloRegistro1Click(Sender: TObject);
+    procedure SoloFiltro1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -122,7 +125,7 @@ implementation
 
 {$R *.dfm}
 
-//==============================================================================
+//============================== 0 - Principal =======================================
 
 procedure TLibroForm.FormCreate(Sender: TObject);
 begin
@@ -132,7 +135,7 @@ begin
    btnQuery.Visible := False;
 end;
 
-//==============================================================================
+//=============================== 1 - Botones ==================================
 
 procedure TLibroForm.btnQueryClick(Sender: TObject);
 var
@@ -186,7 +189,7 @@ Begin
    Else ShowMessage('El Query que proporcionó no es válido.' + #13#10 + 'Verifiquelo e intente de nuevo.');
 End;
 
-//==============================================================================
+//================================ 2 - ComboBoxs ===============================
 
 procedure TLibroForm.ComboBox1Change(Sender: TObject);
 begin
@@ -196,9 +199,7 @@ begin
          Comprueba := 'Autor';
          GetDatos();
       End;
-   1: Begin
-         Query('SELECT * FROM Libs WHERE (LOWER(Prestado) = ''s'' or LOWER(Prestado) = ''si'') ORDER BY ID');
-      End;
+   1: Query('SELECT * FROM Libs WHERE (LOWER(Prestado) = ''s'' or LOWER(Prestado) = ''si'') ORDER BY ID');
    2: Begin
          Comprueba := 'Propietario';
          GetDatos();
@@ -207,9 +208,7 @@ begin
          Comprueba := 'Saga';
          GetDatos();
       End;
-   4: Begin
-         Query('SELECT * FROM Libs');
-      End;
+   4: Query('SELECT * FROM Libs');
    //ShowMessage(dbgLibros.Fields[5].AsString);
    //ShowMessage(dbgLibros.DataSource.DataSet.FieldByName('Saga').AsString);
    End;
@@ -220,7 +219,6 @@ Var
    ComboBoxDato: String;
 begin
    ComboBoxDato := ComboBox2.Text;
-
    If ComboBox2.ItemIndex = 0 Then
    Begin
       qryLibros.Active := False;
@@ -230,18 +228,13 @@ begin
    End
    Else
    Begin
-   
       qryLibros.Active := False;
       qryLibros.SQL.Clear;
-
       If ComboBoxDato = 'Sin Datos' Then ComboBoxDato := '';
-
       If Comprueba = 'Saga' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Tomo')
       Else If Comprueba = 'Autor' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo')
       Else If Comprueba = 'Propietario' Then qryLibros.SQL.Add('SELECT * FROM Libs WHERE '+Comprueba+' = '''+ComboBoxDato+''' ORDER BY Saga, Tomo');
-
       qryLibros.Active := True;
-
    End;
 end;
 
@@ -379,13 +372,13 @@ Begin
          ComboBox2.Items[Pos] := 'Sin Datos';
       End Else
    End;
-
+   
    qryLibros.FindFirst;
    ComboBox2.ItemIndex := 0;
    ComboBox2.SelStart;
 End;
 
-//==============================================================================
+//======================= 3 - PopUp Menu [Validaciones] ========================
 
 procedure TLibroForm.PopupMenu1Popup(Sender: TObject);
 Begin
@@ -424,31 +417,26 @@ Begin
    End;
 End;
 
+//============================ 4 - PopUp Menu [DBGrids] ========================
+
 procedure TLibroForm.Copiar1Click(Sender: TObject);
 Var
    Caso : Integer;
 Begin
-
    Caso := 0;
-
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then Caso := 0
    Else If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgQuery' Then Caso := 1;
-
    Copiar(Caso);
-
 end;
 
 procedure TLibroForm.Pegar1Click(Sender: TObject);
 Begin
-
    //Columna := dbgLibros.SelectedField.FieldName;  //Obtiene el nombre de la columna actual.
-
    If TComponent(PopUpMenu1.PopupComponent).Name = 'dbgLibros' Then
    Begin
       dbgLibros.DataSource.Edit;
       Pegar();
    End;
-
 End;
 
 procedure TLibroForm.Limpiar1Click(Sender: TObject);
@@ -488,17 +476,13 @@ Var
    Resp : String;
    Comp : String;
 Begin
-
    Resp := Clipboard.AsText;
-
    Case Caso Of
    0: If dbgLibros.SelectedField.Text <> '' Then Comp := dbgLibros.SelectedField.Text;
    1: If dbgQuery.SelectedField.Text <> '' Then Comp := dbgQuery.SelectedField.Text;
    End;
-
    If Comp = '' Then Clipboard.AsText := Resp
    Else Clipboard.AsText := Comp;
-
 End;
 
 procedure TLibroForm.Pegar();
@@ -506,6 +490,8 @@ Begin
    dbgLibros.DataSource.Edit;
    dbgLibros.SelectedField.Text := Clipboard.AsText;
 End;
+
+//========================== 5 - PopUp Menu [Botonoes] =========================
 
 procedure TLibroForm.FiltroPersonalizado1Click(Sender: TObject);
 begin
@@ -534,19 +520,6 @@ begin
       MainMenu1.Items[0].Items[0].Checked := False;
       btnQuery.Visible := False;
    End;
-
-   {If btnQuery.Visible = False Then
-   Begin
-      MainMenu1.Items[0].Items[0].Checked := True;
-      btnQuery.Visible := True;
-      Version.Left := 560;
-   End
-   Else
-   Begin
-      MainMenu1.Items[0].Items[0].Checked := False;
-      btnQuery.Visible := False;
-      Version.Left := 672;
-   End;}
 end;
 
 procedure TLibroForm.BuscarLibro1Click(Sender: TObject);
@@ -584,18 +557,6 @@ begin
       End;
       btnBusqueda.Visible := False;
    End;
-
-   {If btnBusqueda.Visible = False Then
-   Begin
-      MainMenu1.Items[0].Items[1].Checked := True;
-      btnBusqueda.Visible := True;
-   End
-   Else
-   Begin
-      MainMenu1.Items[0].Items[1].Checked := False;
-      btnBusqueda.Visible := False
-   End;}
-
 end;
 
 procedure TLibroForm.Refrescar2Click(Sender: TObject);
@@ -629,7 +590,7 @@ begin
    End;
 end;
 
-//==============================================================================
+//============================ 6 - Main Menu [Ver] =============================
 
 procedure TLibroForm.FiltroPersonalizado2Click(Sender: TObject);
 begin
@@ -754,23 +715,95 @@ begin
    End;
 end;
 
-procedure TLibroForm.VerQuery1Click(Sender: TObject);
+//========================== 7 - Main Menu [Mostrar] ===========================
+
+procedure TLibroForm.SoloRegistro1Click(Sender: TObject);
+begin
+   If dbgQuery.Visible = True Then
+   Begin
+      
+      dbgLibros.Top := 72;
+      dbgLibros.Height := 515;
+
+      dbgQuery.Visible := False;
+      
+      MainMenu1.Items[0].Enabled := False;
+      MainMenu1.Items[1].Items[1].Enabled := False;
+
+      PopupMenu1.Items[5].Enabled := False;
+      PopupMenu1.Items[6].Enabled := False;
+      PopupMenu1.Items[7].Enabled := False;
+
+      btnQuery.Enabled := False;
+      btnBusqueda.Enabled := False;
+      btnRefrescar.Enabled := False;
+                              
+      Label1.Top := 28;
+      Label2.Visible := False;
+
+      ComboBox1.Visible := False;
+      ComboBox2.Visible := False;
+      ComboBox3.Visible := False;
+
+      DBText1.Visible := False;
+      DBEdit1.Visible := False;
+      DBEdit2.Visible := False;
+      DBEdit3.Visible := False;
+
+   End Else
+   If dbgQuery.Visible = False Then
+   Begin
+   
+      dbgLibros.Top := 422;
+      dbgLibros.Height := 165;
+
+      dbgQuery.Visible := True;
+
+      MainMenu1.Items[0].Enabled := True;
+      MainMenu1.Items[1].Items[1].Enabled := True;
+
+      PopupMenu1.Items[5].Enabled := True;
+      PopupMenu1.Items[6].Enabled := True;
+      PopupMenu1.Items[7].Enabled := True;
+
+      btnQuery.Enabled := True;
+      btnBusqueda.Enabled := True;
+      btnRefrescar.Enabled := True;
+                             
+      Label1.Top := 392;
+      Label2.Visible := True;
+
+      ComboBox1.Visible := True;
+      ComboBox2.Visible := True;
+      ComboBox3.Visible := True;
+
+      DBText1.Visible := True;
+      DBEdit1.Visible := True;
+      DBEdit2.Visible := True;
+      DBEdit3.Visible := True;
+
+   End;
+end;
+
+procedure TLibroForm.SoloFiltro1Click(Sender: TObject);
 begin
    If dbgLibros.Visible = True Then
    Begin
+      MainMenu1.Items[1].Items[0].Enabled := False;
       dbgQuery.Height := 515;
       dbgLibros.Visible := False;
       Label1.Visible := False;
    End Else
    If dbgLibros.Visible = False Then
    Begin
+      MainMenu1.Items[1].Items[0].Enabled := True;
       dbgQuery.Height := 309;
       dbgLibros.Visible := True;
       Label1.Visible := True;
    End;
 end;
 
-//==============================================================================
+//================================= 8 - Query ==================================
 
 procedure TLibroForm.dbgQueryKeyPress(Sender: TObject; var Key: Char);
 Var
@@ -805,6 +838,8 @@ Begin
    qryLibros.SQL.Add(Query);
    qryLibros.Active := True;
 End;
+
+//============================== 9 - Buscar ID =================================
 
 procedure TLibroForm.BuscarID(ID: String; Componente: String = '');
 var
@@ -876,7 +911,7 @@ begin
    End;
 End;
 
-//==============================================================================
+//=============================== 10 - Funciones ===============================
 
 function TLibroForm.EliminaSaltoLinea(const Cadena: string): string;
 var
@@ -906,5 +941,7 @@ begin
   if i = 0 then
     Result:= True;
 end;
+
+//================================ 11 - Nuevos =================================
 
 end.

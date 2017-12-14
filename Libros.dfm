@@ -35,9 +35,9 @@ object LibroForm: TLibroForm
   object Label1: TLabel
     Left = 8
     Top = 392
-    Width = 238
+    Width = 251
     Height = 19
-    Caption = 'Registro/Modificaci'#243'n de Datos'
+    Caption = 'Registro y Modificaci'#243'n de Datos'
     Font.Charset = TURKISH_CHARSET
     Font.Color = clTeal
     Font.Height = -16
@@ -284,8 +284,8 @@ object LibroForm: TLibroForm
   end
   object PopupMenu1: TPopupMenu
     OnPopup = PopupMenu1Popup
-    Left = 264
-    Top = 387
+    Left = 536
+    Top = 11
     object Copiar1: TMenuItem
       Caption = '&Copiar'
       OnClick = Copiar1Click
@@ -395,8 +395,8 @@ object LibroForm: TLibroForm
   end
   object dsQuery: TDataSource
     DataSet = qryLibros
-    Left = 328
-    Top = 387
+    Left = 600
+    Top = 11
   end
   object dsLibros: TDataSource
     DataSet = tbLibros
@@ -408,8 +408,8 @@ object LibroForm: TLibroForm
     DatabaseName = 'ZioN'
     SQL.Strings = (
       'SELECT * FROM Libs')
-    Left = 296
-    Top = 387
+    Left = 568
+    Top = 11
     object qryLibrosID: TIntegerField
       FieldName = 'ID'
       Origin = 'ZION."Libs.DB".ID'
@@ -502,11 +502,18 @@ object LibroForm: TLibroForm
         Checked = True
         OnClick = LineadeDatos1Click
       end
-      object VerQuery1: TMenuItem
+    end
+    object Mostar1: TMenuItem
+      Caption = '&Mostar'
+      object SoloRegistro1: TMenuItem
         AutoCheck = True
-        Caption = '&Ver Registro'
-        Checked = True
-        OnClick = VerQuery1Click
+        Caption = 'Solo &Registro'
+        OnClick = SoloRegistro1Click
+      end
+      object SoloFiltro1: TMenuItem
+        AutoCheck = True
+        Caption = 'Solo &Filtro'
+        OnClick = SoloFiltro1Click
       end
     end
   end
