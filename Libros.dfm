@@ -2,6 +2,7 @@ object LibroForm: TLibroForm
   Left = 301
   Top = 29
   VertScrollBar.ParentColor = False
+  BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Base de Datos de Libros'
   ClientHeight = 596
@@ -70,7 +71,7 @@ object LibroForm: TLibroForm
     Top = 6
     Width = 62
     Height = 13
-    Caption = 'Versi'#243'n 1.3.6'
+    Caption = 'Versi'#243'n 1.3.7'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal

@@ -793,6 +793,7 @@ begin
       dbgQuery.Height := 515;
       dbgLibros.Visible := False;
       Label1.Visible := False;
+      PopupMenu1.Items[3].Enabled := False;
    End Else
    If dbgLibros.Visible = False Then
    Begin
@@ -800,6 +801,7 @@ begin
       dbgQuery.Height := 309;
       dbgLibros.Visible := True;
       Label1.Visible := True;
+      PopupMenu1.Items[3].Enabled := True;
    End;
 end;
 
