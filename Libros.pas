@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.8
+unit Libros;            // By LawlietJH, Versión 1.3.9
 
 interface
 
@@ -746,10 +746,20 @@ begin
       Else ComboBox2.Visible := False;
       ComboBox3.Visible := False;
 
-      DBText1.Visible := False;
-      DBEdit1.Visible := False;
-      DBEdit2.Visible := False;
-      DBEdit3.Visible := False;
+      If DBText1.Visible = False Then
+      Begin
+         DBText1.Enabled := False;
+         DBEdit1.Enabled := False;
+         DBEdit2.Enabled := False;
+         DBEdit3.Enabled := False;
+      End
+      Else
+      Begin
+         DBText1.Visible := False;
+         DBEdit1.Visible := False;
+         DBEdit2.Visible := False;
+         DBEdit3.Visible := False;
+      End;
 
    End Else
    If dbgQuery.Visible = False Then
@@ -775,17 +785,27 @@ begin
       Label2.Visible := True;
 
       ComboBox1.Visible := True;
-      if ComboBox2.Enabled = False Then
+      If ComboBox2.Enabled = False Then
       Begin
          ComboBox2.Enabled := True;
       End
       Else ComboBox2.Visible := True;
       ComboBox3.Visible := True;
 
-      DBText1.Visible := True;
-      DBEdit1.Visible := True;
-      DBEdit2.Visible := True;
-      DBEdit3.Visible := True;
+      If DBText1.Enabled = False Then
+      Begin
+         DBText1.Enabled := True;
+         DBEdit1.Enabled := True;
+         DBEdit2.Enabled := True;
+         DBEdit3.Enabled := True;
+      End
+      Else
+      Begin
+         DBText1.Visible := True;
+         DBEdit1.Visible := True;
+         DBEdit2.Visible := True;
+         DBEdit3.Visible := True;
+      End;
 
    End;
 end;
