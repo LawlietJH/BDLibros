@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.7
+unit Libros;            // By LawlietJH, Versión 1.3.8
 
 interface
 
@@ -742,7 +742,8 @@ begin
       Label2.Visible := False;
 
       ComboBox1.Visible := False;
-      ComboBox2.Visible := False;
+      If ComboBox2.Visible = False Then ComboBox2.Enabled := False
+      Else ComboBox2.Visible := False;
       ComboBox3.Visible := False;
 
       DBText1.Visible := False;
@@ -774,7 +775,11 @@ begin
       Label2.Visible := True;
 
       ComboBox1.Visible := True;
-      ComboBox2.Visible := True;
+      if ComboBox2.Enabled = False Then
+      Begin
+         ComboBox2.Enabled := True;
+      End
+      Else ComboBox2.Visible := True;
       ComboBox3.Visible := True;
 
       DBText1.Visible := True;
