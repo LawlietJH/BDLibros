@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.3.9
+unit Libros;            // By LawlietJH, Versión 1.4.0
 
 interface
 
@@ -68,7 +68,7 @@ type
     FiltroPersonalizado1: TMenuItem;
     BuscarLibro1: TMenuItem;
     MainMenu1: TMainMenu;
-    Mostrar1: TMenuItem;
+    Habilitar1: TMenuItem;
     FiltroPersonalizado2: TMenuItem;
     BuscarLibro2: TMenuItem;
     Refrescar1: TMenuItem;
@@ -77,6 +77,9 @@ type
     Mostar1: TMenuItem;
     SoloRegistro1: TMenuItem;
     SoloFiltro1: TMenuItem;
+    ElegirTema1: TMenuItem;
+    OscuroPorDefecto1: TMenuItem;
+    Claro1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnQueryClick(Sender: TObject);
     procedure btnBusquedaClick(Sender: TObject);
@@ -110,6 +113,8 @@ type
     procedure Refrescar2Click(Sender: TObject);
     procedure SoloRegistro1Click(Sender: TObject);
     procedure SoloFiltro1Click(Sender: TObject);
+    procedure OscuroPorDefecto1Click(Sender: TObject);
+    procedure Claro1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -590,11 +595,11 @@ begin
    End;
 end;
 
-//============================ 6 - Main Menu [Ver] =============================
+//========================= 6 - Main Menu [Habilitar] ==========================
 
 procedure TLibroForm.FiltroPersonalizado2Click(Sender: TObject);
 begin
-   Version.Left := 672;
+   Version.Left := 662;
    If btnQuery.Visible = False Then
    Begin
       PopUpMenu1.Items[5].Checked := True;
@@ -602,7 +607,7 @@ begin
       Begin
          If btnRefrescar.Visible = True Then
          Begin
-            Version.Left := 560;
+            Version.Left := 550;
             btnQuery.Top := 4;
          End
          Else btnQuery.Top := 26;
@@ -828,6 +833,64 @@ begin
       Label1.Visible := True;
       PopupMenu1.Items[3].Enabled := True;
    End;
+end;
+
+//=========================== 7 - Main Menu [Tema] =============================
+
+procedure TLibroForm.OscuroPorDefecto1Click(Sender: TObject);
+begin
+   If LibroForm.Color <> clBackground Then
+   Begin                        
+      LibroForm.Color := clBackground;
+      
+      Label1.Color    := clBackground;    Label1.Font.Color    := clTeal;
+      Label2.Color    := clBackground;    Label2.Font.Color    := clTeal;
+
+      Version.Color   := clBackground;    Version.Font.Color   := clTeal;
+
+      ComboBox1.Color := clDefault;       ComboBox1.Font.Color := clGradientActiveCaption;
+      ComboBox2.Color := clDefault;       ComboBox2.Font.Color := clGradientActiveCaption;
+      ComboBox3.Color := clDefault;       ComboBox3.Font.Color := clGradientActiveCaption;
+
+      DBText1.Color   := clHighlightText; DBText1.Font.Color   := clWindowText;
+      DBEdit1.Color   := clWindow;        DBEdit1.Font.Color   := clWindowText;
+      DBEdit2.Color   := clWindow;        DBEdit2.Font.Color   := clWindowText;
+      DBEdit3.Color   := clWindow;        DBEdit3.Font.Color   := clWindowText;
+
+      dbgQuery.Color  := clSilver;        dbgQuery.Font.Style  := [];
+      dbgLibros.Color := clSilver;        dbgLibros.Font.Style := [];
+
+
+   End;
+   MainMenu1.Items[2].Items[0].Checked := True;
+   MainMenu1.Items[2].Items[1].Checked := False;
+end;
+
+procedure TLibroForm.Claro1Click(Sender: TObject);
+begin
+   If LibroForm.Color <> clCream Then
+   Begin                                                          
+      LibroForm.Color := clWhite;
+
+      Label1.Color    := clWhite; Label1.Font.Color    := clBlack;
+      Label2.Color    := clWhite; Label2.Font.Color    := clBlack;
+
+      Version.Color   := clWhite; Version.Font.Color   := clBlack;
+
+      ComboBox1.Color := clMenu;  ComboBox1.Font.Color := clBlack;
+      ComboBox2.Color := clMenu;  ComboBox2.Font.Color := clBlack;
+      ComboBox3.Color := clMenu;  ComboBox3.Font.Color := clBlack;
+
+      DBText1.Color   := clMenu;  DBText1.Font.Color   := clBlack;
+      DBEdit1.Color   := clMenu;  DBEdit1.Font.Color   := clTeal;
+      DBEdit2.Color   := clMenu;  DBEdit2.Font.Color   := clTeal;
+      DBEdit3.Color   := clMenu;  DBEdit3.Font.Color   := clTeal;
+
+      dbgQuery.Color  := clMenu;  dbgQuery.Font.Style  := [fsBold];
+      dbgLibros.Color := clMenu;  dbgLibros.Font.Style := [fsBold];
+   End;
+   MainMenu1.Items[2].Items[0].Checked := False;
+   MainMenu1.Items[2].Items[1].Checked := True;
 end;
 
 //================================= 8 - Query ==================================

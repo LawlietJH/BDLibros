@@ -67,17 +67,17 @@ object LibroForm: TLibroForm
     ShowHint = True
   end
   object Version: TLabel
-    Left = 672
+    Left = 661
     Top = 6
-    Width = 62
+    Width = 76
     Height = 13
-    Caption = 'Versi'#243'n 1.3.9'
+    Caption = 'Versi'#243'n 1.4.0'
     Color = clBackground
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
   end
@@ -478,8 +478,8 @@ object LibroForm: TLibroForm
   object MainMenu1: TMainMenu
     Left = 536
     Top = 387
-    object Mostrar1: TMenuItem
-      Caption = '&Ver'
+    object Habilitar1: TMenuItem
+      Caption = '&Habilitar'
       object FiltroPersonalizado2: TMenuItem
         AutoCheck = True
         Caption = 'Filtro &Personalizado'
@@ -515,6 +515,19 @@ object LibroForm: TLibroForm
         AutoCheck = True
         Caption = 'Solo &Filtro'
         OnClick = SoloFiltro1Click
+      end
+    end
+    object ElegirTema1: TMenuItem
+      Caption = 'Elegir &Tema'
+      object OscuroPorDefecto1: TMenuItem
+        Caption = '&Oscuro (Por Defecto)'
+        Checked = True
+        Default = True
+        OnClick = OscuroPorDefecto1Click
+      end
+      object Claro1: TMenuItem
+        Caption = '&Claro'
+        OnClick = Claro1Click
       end
     end
   end
