@@ -1,4 +1,4 @@
-unit Libros;            // By LawlietJH, Versión 1.4.0
+unit Libros;            // By LawlietJH, Versión 1.4.1
 
 interface
 
@@ -500,7 +500,7 @@ End;
 
 procedure TLibroForm.FiltroPersonalizado1Click(Sender: TObject);
 begin
-   Version.Left := 672;
+   Version.Left := 662;
    If btnQuery.Visible = False Then
    Begin
       MainMenu1.Items[0].Items[0].Checked := True;
@@ -508,7 +508,7 @@ begin
       Begin
          If btnRefrescar.Visible = True Then
          Begin
-            Version.Left := 560;
+            Version.Left := 550;
             btnQuery.Top := 4;
          End
          Else btnQuery.Top := 26;
@@ -529,7 +529,7 @@ end;
 
 procedure TLibroForm.BuscarLibro1Click(Sender: TObject);
 begin
-   Version.Left := 672;
+   Version.Left := 662;
    If btnBusqueda.Visible = False Then
    Begin
       MainMenu1.Items[0].Items[1].Checked := True;
@@ -537,7 +537,7 @@ begin
       Begin
          If btnQuery.Visible = True Then
          Begin
-            Version.Left := 560;
+            Version.Left := 550;
             btnQuery.Top := 4;
          End;
          btnBusqueda.Top := 26;
@@ -566,7 +566,7 @@ end;
 
 procedure TLibroForm.Refrescar2Click(Sender: TObject);
 begin
-   Version.Left := 672;
+   Version.Left := 662;
    If btnRefrescar.Visible = False Then
    Begin
       MainMenu1.Items[0].Items[2].Checked := True;
@@ -575,7 +575,7 @@ begin
       Begin
          If btnBusqueda.Visible = True Then
          Begin
-            Version.Left := 560;
+            Version.Left := 550;
             btnQuery.Top := 4
          End
          Else btnQuery.Top := 26;
@@ -628,7 +628,7 @@ end;
 
 procedure TLibroForm.BuscarLibro2Click(Sender: TObject);
 begin
-   Version.Left := 672;
+   Version.Left := 662;
    If btnBusqueda.Visible = False Then
    Begin
       PopUpMenu1.Items[6].Checked := True;
@@ -636,7 +636,7 @@ begin
       Begin
          If btnQuery.Visible = True Then
          Begin
-            Version.Left := 560;
+            Version.Left := 550;
             btnQuery.Top := 4;
          End;
          btnBusqueda.Top := 26;
@@ -665,7 +665,7 @@ end;
 
 procedure TLibroForm.Refrescar1Click(Sender: TObject);
 begin
-   Version.Left := 672;
+   Version.Left := 662;
    If btnRefrescar.Visible = False Then
    Begin
       PopUpMenu1.Items[7].Checked := True;
@@ -674,7 +674,7 @@ begin
       Begin
          If btnBusqueda.Visible = True Then
          Begin
-            Version.Left := 560;
+            Version.Left := 550;
             btnQuery.Top := 4
          End
          Else btnQuery.Top := 26;
@@ -860,7 +860,10 @@ begin
       dbgQuery.Color  := clSilver;        dbgQuery.Font.Style  := [];
       dbgLibros.Color := clSilver;        dbgLibros.Font.Style := [];
 
-
+      btnQuery.Caption := '&Filtro Personalizado'; btnQuery.Font.Style := [];
+      btnQuery.Font.Color     := clWindowText;
+      btnBusqueda.Font.Color  := clWindowText;
+      btnRefrescar.Font.Color := clWindowText;
    End;
    MainMenu1.Items[2].Items[0].Checked := True;
    MainMenu1.Items[2].Items[1].Checked := False;
@@ -888,6 +891,11 @@ begin
 
       dbgQuery.Color  := clMenu;  dbgQuery.Font.Style  := [fsBold];
       dbgLibros.Color := clMenu;  dbgLibros.Font.Style := [fsBold];
+                                            
+      btnQuery.Caption := '&Filtro'; btnQuery.Font.Style := [fsBold];
+      btnQuery.Font.Color     := clTeal;
+      btnBusqueda.Font.Color  := clTeal;
+      btnRefrescar.Font.Color := clTeal;
    End;
    MainMenu1.Items[2].Items[0].Checked := False;
    MainMenu1.Items[2].Items[1].Checked := True;
